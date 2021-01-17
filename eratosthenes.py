@@ -84,8 +84,6 @@ def alg3(end):
             prime.append(i)
     return prime
 
-#end = input('Bestimme alle Primzahlen von 2 bis ')
-#method = input('Benutze Algorithmus Nr. (1-3) ')
 end = args.limit
 method = args.method
 start = time.process_time()
@@ -97,10 +95,10 @@ elif method == 'odd':
     primes = alg3(int(end))
 else:
     if verbosity >= 0:
-        print('Nicht vorhanden!')
+        print('Input invalid.')
 if verbosity >= 0:
     print(primes)
 elapsed = (time.process_time() - start)
 if verbosity >= 0:
-    print('Es wurden {} Primzahlen in {:.5f} Sekunden gefunden.'.format(len(primes), elapsed))
+    print('Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
 
