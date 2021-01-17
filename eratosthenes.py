@@ -19,6 +19,7 @@ parser.add_argument('-q', '--quiet', action='store_true',
                     help=('disable terminal output (terminates all verbosity)'))
 parser.add_argument('-m', '--method', dest='method', choices=('all', 'sqrt', 'odd-all', 'odd-sqrt'), default='sqrt', help='sieve method')
 parser.add_argument('limit', type=int, default=100, help='upper limit of test range')
+parser.add_argument('outfile', nargs='?', help='write to file')
 
 args = parser.parse_args()
 verbosity = args.verbose
@@ -86,6 +87,7 @@ def alg3(end):
 
 end = args.limit
 method = args.method
+outfile = args.outfile
 start = time.process_time()
 if method == 'all':
     primes = alg1(int(end))
@@ -101,4 +103,14 @@ if verbosity >= 0:
 elapsed = (time.process_time() - start)
 if verbosity >= 0:
     print('Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
+if outfile is not None:
+    with open(outfile, 'w', encoding='UTF-8') as f:
+        f.write('# ********** Eratosthenes v0.2 2021-01-17 **********\n')
+        f.write('# Tested integer range:   [2, {}]\n'.format(end))
+        f.write('# Detected prime numbers: {}\n'.format(len(primes)))
+        f.write('# Applied method:         {}\n'.format(method))
+        f.write('# Sifting time:           {} seconds\n'.format(elapsed))
+        f.write('# **************************************************\n')
+        for i in range(len(primes)):
+            f.write('{}\n'.format(primes[i]))
 
