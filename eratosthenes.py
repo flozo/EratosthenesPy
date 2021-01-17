@@ -77,9 +77,21 @@ def alg2(end):
             prime.append(i)
     return prime
 
-# check only even numbers to sqrt(n)
+
+# check only odd numbers
 def alg3(end):
     prime = []
+    prime.append(2)
+    for i in range(3, end, 2):
+        if len(divisors(i)) == 2:
+            prime.append(i)
+    return prime
+
+
+# check only odd numbers to sqrt(n)
+def alg4(end):
+    prime = []
+    prime.append(2)
     for i in range(3, end, 2):
         if len(divisorsfast(i)) == 2:
             prime.append(i)
@@ -93,8 +105,10 @@ if method == 'all':
     primes = alg1(int(end))
 elif method == 'sqrt':
     primes = alg2(int(end))
-elif method == 'odd':
+elif method == 'odd-all':
     primes = alg3(int(end))
+elif method == 'odd-sqrt':
+    primes = alg4(int(end))
 else:
     if verbosity >= 0:
         print('Input invalid.')
