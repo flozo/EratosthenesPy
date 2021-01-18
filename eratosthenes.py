@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Eratosthenes v0.2 2021-01-17
+# Eratosthenes v0.3 2021-01-18
 
 import argparse
 import time
@@ -63,7 +63,7 @@ def divisors(number):
 # check all numbers
 def alg1(end):
     prime = []
-    for i in range(2, end):
+    for i in range(2, end+1):
         if len(divisors(i)) == 2:
             prime.append(i)
     return prime
@@ -72,7 +72,7 @@ def alg1(end):
 # check only to sqrt(n)
 def alg2(end):
     prime = []
-    for i in range(2, end):
+    for i in range(2, end+1):
         if len(divisorsfast(i)) == 2:
             prime.append(i)
     return prime
@@ -82,7 +82,7 @@ def alg2(end):
 def alg3(end):
     prime = []
     prime.append(2)
-    for i in range(3, end, 2):
+    for i in range(3, end+1, 2):
         if len(divisors(i)) == 2:
             prime.append(i)
     return prime
@@ -92,7 +92,7 @@ def alg3(end):
 def alg4(end):
     prime = []
     prime.append(2)
-    for i in range(3, end, 2):
+    for i in range(3, end+1, 2):
         if len(divisorsfast(i)) == 2:
             prime.append(i)
     return prime
