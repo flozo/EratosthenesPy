@@ -6,7 +6,9 @@ import argparse
 import time
 import numpy as np
 
+
 # Define argument parsers and subparsers
+
 parser = argparse.ArgumentParser(description='A program for testing implementations of the sieve of Eratosthenes. Written by Johannes Engelmayer')
 
 parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.4 (2021-05-04)')
@@ -20,13 +22,17 @@ parser.add_argument('limit', type=int, default=100, help='upper limit of test ra
 parser.add_argument('outfile', nargs='?', help='write to file')
 
 args = parser.parse_args()
+
+# Check verbosity level
+
 verbosity = args.verbose
 if args.quiet is True:
     verbosity = -1
-
 if verbosity >= 1:
     print(args)
 
+
+# Determine divisors of a number
 
 def divisorsfasteven(number):
     divs = []
@@ -39,6 +45,9 @@ def divisorsfasteven(number):
 
 
 def divisorsfast(number):
+    """
+    Determine all divisors of number up to square root of number
+    """
     divs = []
     divs.append(1)
     for i in range(2, int(np.sqrt(number))+1):
@@ -49,6 +58,9 @@ def divisorsfast(number):
 
 
 def divisors(number):
+    """
+    Determine all divisors of number up to number
+    """
     divs = []
     divs.append(1)
     for i in range(2, number):
@@ -58,8 +70,12 @@ def divisors(number):
     return divs
 
 
-# check all numbers
+# Sieve algorithms
+
 def alg1(end):
+    """
+    Check all numbers up to upper endpoint
+    """
     prime = []
     for i in range(2, end+1):
         if len(divisors(i)) == 2:
@@ -67,8 +83,10 @@ def alg1(end):
     return prime
 
 
-# check only to sqrt(n)
 def alg2(end):
+    """
+    Check all numbers up to square root of upper endpoint
+    """
     prime = []
     for i in range(2, end+1):
         if len(divisorsfast(i)) == 2:
@@ -76,8 +94,10 @@ def alg2(end):
     return prime
 
 
-# check only odd numbers
 def alg3(end):
+    """
+    Check only odd numbers up to upper endpoint
+    """
     prime = []
     prime.append(2)
     for i in range(3, end+1, 2):
@@ -86,14 +106,19 @@ def alg3(end):
     return prime
 
 
-# check only odd numbers to sqrt(n)
 def alg4(end):
+    """
+    Check only odd numbers up to square root of upper endpoint
+    """
     prime = []
     prime.append(2)
     for i in range(3, end+1, 2):
         if len(divisorsfast(i)) == 2:
             prime.append(i)
     return prime
+
+
+# Main part
 
 end = args.limit
 method = args.method
