@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Eratosthenes v0.5 2021-05-06
+# Eratosthenes v0.6 2021-05-06
 
 import argparse
 import time
@@ -11,13 +11,13 @@ import numpy as np
 
 parser = argparse.ArgumentParser(description='A program for testing implementations of the sieve of Eratosthenes. Written by Johannes Engelmayer')
 
-parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.5 (2021-05-06)')
+parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.6 (2021-05-06)')
 parser.add_argument('-v', '--verbose', action='count', default=0,
                     help='verbosity level (-v, -vv, -vvv): '
                     'default = single-line output, v = multi-line, vv = detailed, vvv = array output')
 parser.add_argument('-q', '--quiet', action='store_true',
                     help=('disable terminal output (terminates all verbosity)'))
-parser.add_argument('-m', '--method', dest='method', choices=('all', 'sqrt', 'odd-all', 'odd-sqrt', '6k-all', '6k-sqrt', '4k-all', '4k-sqrt'), default='sqrt', help='sieve method')
+parser.add_argument('-m', '--method', dest='method', choices=('all', 'sqrt', 'odd-all', 'odd-sqrt', '6k-all', '6k-sqrt', '4k-all', '4k-sqrt', '3k-all', '3k-sqrt'), default='sqrt', help='sieve method')
 parser.add_argument('limit', type=int, default=100, help='upper limit of test range')
 parser.add_argument('outfile', nargs='?', help='write to file')
 
@@ -175,6 +175,39 @@ def alg8(end):
     return prime
 
 
+def alg9(end):
+    """
+    Check all numbers of form 3k+1 and 3k+2 up to upper endpoint
+    """
+    prime = []
+    prime.append(2)
+    prime.append(3)
+    for i in range(1, (end-2)//3+1):
+        class1 = 3*i+1
+        class2 = 3*i+2
+        if len(divisors(class1)) == 2:
+            prime.append(class1)
+        if len(divisors(class2)) == 2:
+            prime.append(class2)
+    return prime
+
+
+def alg10(end):
+    """
+    Check all numbers of form 3k+1 and 3k+2 up to square root of upper endpoint
+    """
+    prime = []
+    prime.append(2)
+    prime.append(3)
+    for i in range(1, (end-2)//3+1):
+        class1 = 3*i+1
+        class2 = 3*i+2
+        if len(divisorsfast(class1)) == 2:
+            prime.append(class1)
+        if len(divisorsfast(class2)) == 2:
+            prime.append(class2)
+    return prime
+
 
 # Main part
 
@@ -198,6 +231,10 @@ elif method == '4k-all':
     primes = alg7(int(end))
 elif method == '4k-sqrt':
     primes = alg8(int(end))
+elif method == '3k-all':
+    primes = alg9(int(end))
+elif method == '3k-sqrt':
+    primes = alg10(int(end))
 else:
     if verbosity >= 0:
         print('Input invalid.')
@@ -208,7 +245,7 @@ if verbosity >= 0:
     print('Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
 if outfile is not None:
     with open(outfile, 'w', encoding='UTF-8') as f:
-        f.write('# ********** Eratosthenes v0.5 2021-05-06 **********\n')
+        f.write('# ********** Eratosthenes v0.6 2021-05-06 **********\n')
         f.write('# Tested integer range:   [2, {}]\n'.format(end))
         f.write('# Detected prime numbers: {}\n'.format(len(primes)))
         f.write('# Applied method:         {}\n'.format(method))
