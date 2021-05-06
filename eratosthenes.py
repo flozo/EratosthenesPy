@@ -17,7 +17,7 @@ parser.add_argument('-v', '--verbose', action='count', default=0,
                     'default = single-line output, v = multi-line, vv = detailed, vvv = array output')
 parser.add_argument('-q', '--quiet', action='store_true',
                     help=('disable terminal output (terminates all verbosity)'))
-parser.add_argument('-m', '--method', dest='method', choices=('all', 'sqrt', 'odd-all', 'odd-sqrt'), default='sqrt', help='sieve method')
+parser.add_argument('-m', '--method', dest='method', choices=('all', 'sqrt', 'odd-all', 'odd-sqrt', '6k-all'), default='sqrt', help='sieve method')
 parser.add_argument('limit', type=int, default=100, help='upper limit of test range')
 parser.add_argument('outfile', nargs='?', help='write to file')
 
@@ -107,6 +107,22 @@ def alg4(end):
             prime.append(i)
     return prime
 
+def alg5(end):
+    """
+    Check all numbers of form 6k+1 and 6k-1 up to upper endpoint
+    """
+    prime = []
+    prime.append(2)
+    prime.append(3)
+    for i in range(1, (end-1)//6+1):
+        class1 = 6*i-1
+        class2 = 6*i+1
+        if len(divisors(class1)) == 2:
+            prime.append(class1)
+        if len(divisors(class2)) == 2:
+            prime.append(class2)
+    return prime
+
 
 # Main part
 
@@ -122,6 +138,8 @@ elif method == 'odd-all':
     primes = alg3(int(end))
 elif method == 'odd-sqrt':
     primes = alg4(int(end))
+elif method == '6k-all':
+    primes = alg5(int(end))
 else:
     if verbosity >= 0:
         print('Input invalid.')
