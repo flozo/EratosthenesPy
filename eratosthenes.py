@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Eratosthenes v0.4 2021-05-04
+# Eratosthenes v0.5 2021-05-06
 
 import argparse
 import time
@@ -11,7 +11,7 @@ import numpy as np
 
 parser = argparse.ArgumentParser(description='A program for testing implementations of the sieve of Eratosthenes. Written by Johannes Engelmayer')
 
-parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.4 (2021-05-04)')
+parser.add_argument('-V', '--version', action='version', version='%(prog)s 0.5 (2021-05-06)')
 parser.add_argument('-v', '--verbose', action='count', default=0,
                     help='verbosity level (-v, -vv, -vvv): '
                     'default = single-line output, v = multi-line, vv = detailed, vvv = array output')
@@ -33,16 +33,6 @@ if verbosity >= 1:
 
 
 # Determine divisors of a number
-
-def divisorsfasteven(number):
-    divs = []
-    divs.append(1)
-    for i in range(2, int(np.sqrt(number))):
-        if number % i == 0:
-            divs.append(i)
-    divs.append(number)
-    return divs
-
 
 def divisorsfast(number):
     """
@@ -142,7 +132,7 @@ if verbosity >= 0:
     print('Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
 if outfile is not None:
     with open(outfile, 'w', encoding='UTF-8') as f:
-        f.write('# ********** Eratosthenes v0.4 2021-05-04 **********\n')
+        f.write('# ********** Eratosthenes v0.5 2021-05-06 **********\n')
         f.write('# Tested integer range:   [2, {}]\n'.format(end))
         f.write('# Detected prime numbers: {}\n'.format(len(primes)))
         f.write('# Applied method:         {}\n'.format(method))
