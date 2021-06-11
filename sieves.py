@@ -1,3 +1,5 @@
+import numpy as np
+
 class Algorithm(object):
     """
     Define algorithm class with divisor method and sieve method.
