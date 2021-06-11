@@ -44,7 +44,7 @@ if verbosity >= 1:
 
 # Process arguments
 
-end = args.limit
+limit = int(args.limit)
 algorithm = sieves.Algorithm(args.divisormethod, args.sievemethod)
 outfile = args.outfile
 start = time.process_time()
@@ -53,27 +53,27 @@ start = time.process_time()
 # Use specified algorithms
 
 if algorithm.sievemethod == 'all' and algorithm.divisormethod == 'all':
-    primes = sieves.alg1(int(end))
+    primes = sieves.alg1(limit)
 elif algorithm.sievemethod == 'all' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg2(int(end))
+    primes = sieves.alg2(limit)
 elif algorithm.sievemethod == 'odd' and algorithm.divisormethod == 'all':
-    primes = sieves.alg3(int(end))
+    primes = sieves.alg3(limit)
 elif algorithm.sievemethod == 'odd' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg4(int(end))
+    primes = sieves.alg4(limit)
 elif algorithm.sievemethod == '6k' and algorithm.divisormethod == 'all':
-    primes = sieves.alg5(int(end))
+    primes = sieves.alg5(limit)
 elif algorithm.sievemethod == '6k' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg6(int(end))
+    primes = sieves.alg6(limit)
 elif algorithm.sievemethod == '4k' and algorithm.divisormethod == 'all':
-    primes = sieves.alg7(int(end))
+    primes = sieves.alg7(limit)
 elif algorithm.sievemethod == '4k' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg8(int(end))
+    primes = sieves.alg8(limit)
 elif algorithm.sievemethod == '3k' and algorithm.divisormethod == 'all':
-    primes = sieves.alg9(int(end))
+    primes = sieves.alg9(limit)
 elif algorithm.sievemethod == '3k' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg10(int(end))
+    primes = sieves.alg10(limit)
 #elif method == 'divisors':
-#    primes = sieves.numdivisors(int(end))
+#    primes = sieves.numdivisors(limit)
 else:
     if verbosity >= 0:
         print('Input invalid.')
@@ -90,7 +90,7 @@ if algorithm.sievemethod != 'divisors':
     if outfile is not None:
         with open(outfile, 'w', encoding='UTF-8') as f:
             f.write('# ************ Eratosthenes v{} ************\n'.format(version_str))
-            f.write('# Tested integer range:    [2, {}]\n'.format(end))
+            f.write('# Tested integer range:    [2, {}]\n'.format(limit))
             f.write('# Detected prime numbers:  {}\n'.format(len(primes)))
             f.write('# Applied sieve method:    {}\n'.format(algorithm.sievemethod))
             f.write('# Applied divisors method: {}\n'.format(algorithm.divisormethod))
@@ -100,11 +100,11 @@ if algorithm.sievemethod != 'divisors':
                 f.write('{}\n'.format(primes[i]))
 else:
     if verbosity >=0:
-        print('Created divisor list in the rage [1, {}] in {:5f} seconds'.format(end, elapsed))
+        print('Created divisor list in the rage [1, {}] in {:5f} seconds'.format(limit, elapsed))
     if outfile is not None:
         with open(outfile, 'w', encoding='UTF-8') as f:
             f.write('# ********** Eratosthenes v{} **********\n'.format(version_str))
-            f.write('# Integer range:           [2, {}]\n'.format(end))
+            f.write('# Integer range:           [2, {}]\n'.format(limit))
             f.write('# Applied divisors method: {}\n'.format(algorithm.divisormethod))
             f.write('# Time:                    {} seconds\n'.format(elapsed))
             f.write('# **************************************************\n')
