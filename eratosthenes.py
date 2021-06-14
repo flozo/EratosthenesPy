@@ -52,8 +52,6 @@ if args.divisormethod == 'all':
     divisorfunc = sieves.divisors_all
 elif args.divisormethod == 'sqrt':
     divisorfunc = sieves.divisors_sqrt
-else:
-    print('Unknown divisor method.')
 
 
 # If autoname option is not used, take outfile argument, else generate auto filename
@@ -89,9 +87,6 @@ elif algorithm.sievemethod == '3k':
     primes = sieves.alg_3k(divisorfunc, limit)
 #elif method == 'divisors':
 #    primes = sieves.numdivisors(limit)
-else:
-    if verbosity >= 0:
-        print('Input invalid.')
 if verbosity >= 3:
     print(primes)
 elapsed = (time.process_time() - start)
@@ -101,7 +96,7 @@ elapsed = (time.process_time() - start)
 
 if algorithm.sievemethod != 'divisors':
     if verbosity >= 0:
-        print('Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
+        print('[result] Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
     if outfile is not None:
         with open(outfile, 'w', encoding='UTF-8') as f:
             f.write('# ************ Eratosthenes v{} ************\n'.format(version_str))
