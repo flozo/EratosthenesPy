@@ -12,6 +12,7 @@ class Algorithm(object):
 
 
 # Divisor algorithms
+
 def divisors_all(number):
     """
     Determine divisors of number up to number
@@ -39,153 +40,77 @@ def divisors_sqrt(number):
 
 
 # Sieve algorithms
-def alg1(end):
+
+def alg_all(divisorfunc, limit):
     """
-    Check all numbers up to upper endpoint
+    Check all numbers
     """
     prime = []
     for i in range(2, end+1):
-        if len(divisors_all(i)) == 2:
+        if len(divisorfunc(i)) == 2:
             prime.append(i)
     return prime
 
 
-def alg2(end):
+def alg_odd(divisorfunc, limit):
     """
-    Check all numbers up to square root of upper endpoint
-    """
-    prime = []
-    for i in range(2, end+1):
-        if len(divisors_sqrt(i)) == 2:
-            prime.append(i)
-    return prime
-
-
-def alg3(end):
-    """
-    Check only odd numbers up to upper endpoint
+    Check only odd numbers
     """
     prime = []
     prime.append(2)
-    for i in range(3, end+1, 2):
-        if len(divisors_all(i)) == 2:
+    for i in range(3, limit+1, 2):
+        if len(divisorfunc(i)) == 2:
             prime.append(i)
     return prime
 
 
-def alg4(end):
+def alg_6k(divisorfunc, limit):
     """
-    Check only odd numbers up to square root of upper endpoint
-    """
-    prime = []
-    prime.append(2)
-    for i in range(3, end+1, 2):
-        if len(divisors_sqrt(i)) == 2:
-            prime.append(i)
-    return prime
-
-
-def alg5(end):
-    """
-    Check all numbers of form 6k-1 and 6k+1 up to upper endpoint
+    Check all numbers of form 6k-1 and 6k+1
     """
     prime = []
     prime.append(2)
     prime.append(3)
-    for i in range(1, (end-1)//6+1):
+    for i in range(1, (limit-1)//6+1):
         class1 = 6*i-1
         class2 = 6*i+1
-        if len(divisors_all(class1)) == 2:
+        if len(divisorfunc(class1)) == 2:
             prime.append(class1)
-        if len(divisors_all(class2)) == 2:
+        if len(divisorfunc(class2)) == 2:
             prime.append(class2)
     return prime
 
 
-def alg6(end):
+def alg_4k(divisorfunc, limit):
     """
-    Check all numbers of form 6k-1 and 6k+1 up to square root of upper endpoint
-    """
-    prime = []
-    prime.append(2)
-    prime.append(3)
-    for i in range(1, (end-1)//6+1):
-        class1 = 6*i-1
-        class2 = 6*i+1
-        if len(divisors_sqrt(class1)) == 2:
-            prime.append(class1)
-        if len(divisors_sqrt(class2)) == 2:
-            prime.append(class2)
-        if i % 1000 == 0:
-            print('.', end='', flush=True)
-    print('')
-    return prime
-
-
-def alg7(end):
-    """
-    Check all numbers of form 4k+1 and 4k+3 up to upper endpoint
+    Check all numbers of form 4k+1 and 4k+3
     """
     prime = []
     prime.append(2)
     prime.append(3)
-    for i in range(1, (end-3)//4+1):
+    for i in range(1, (limit-3)//4+1):
         class1 = 4*i+1
         class2 = 4*i+3
-        if len(divisors_all(class1)) == 2:
+        if len(divisorfunc(class1)) == 2:
             prime.append(class1)
-        if len(divisors_all(class2)) == 2:
+        if len(divisorfunc(class2)) == 2:
             prime.append(class2)
     return prime
 
 
-def alg8(end):
+def alg_3k(divisorfunc, limit):
     """
-    Check all numbers of form 4k+1 and 4k+3 up to square root of upper endpoint
-    """
-    prime = []
-    prime.append(2)
-    prime.append(3)
-    for i in range(1, (end-3)//4+1):
-        class1 = 4*i+1
-        class2 = 4*i+3
-        if len(divisors_sqrt(class1)) == 2:
-            prime.append(class1)
-        if len(divisors_sqrt(class2)) == 2:
-            prime.append(class2)
-    return prime
-
-
-def alg9(end):
-    """
-    Check all numbers of form 3k+1 and 3k+2 up to upper endpoint
+    Check all numbers of form 3k+1 and 3k+2
     """
     prime = []
     prime.append(2)
     prime.append(3)
-    for i in range(1, (end-2)//3+1):
+    for i in range(1, (limit-2)//3+1):
         class1 = 3*i+1
         class2 = 3*i+2
-        if len(divisors_all(class1)) == 2:
+        if len(divisorfunc(class1)) == 2:
             prime.append(class1)
-        if len(divisors_all(class2)) == 2:
-            prime.append(class2)
-    return prime
-
-
-def alg10(end):
-    """
-    Check all numbers of form 3k+1 and 3k+2 up to square root of upper endpoint
-    """
-    prime = []
-    prime.append(2)
-    prime.append(3)
-    for i in range(1, (end-2)//3+1):
-        class1 = 3*i+1
-        class2 = 3*i+2
-        if len(divisors_sqrt(class1)) == 2:
-            prime.append(class1)
-        if len(divisors_sqrt(class2)) == 2:
+        if len(divisorfunc(class2)) == 2:
             prime.append(class2)
     return prime
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 #
-# Eratosthenes v0.8 2021-06-11
+# Eratosthenes v0.9 2021-06-14
 
 # Version
 
-version_num = '0.8'
-version_dat = '2021-06-11'
+version_num = '0.9'
+version_dat = '2021-06-14'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 # Import modules
@@ -46,32 +46,27 @@ if verbosity >= 1:
 
 limit = int(args.limit)
 algorithm = sieves.Algorithm(args.divisormethod, args.sievemethod)
+if args.divisormethod == 'all':
+    divisorfunc = sieves.divisors_all
+elif args.divisormethod == 'sqrt':
+    divisorfunc = sieves.divisors_sqrt
+else:
+    print('Unknown divisor method.')
 outfile = args.outfile
 start = time.process_time()
 
 
 # Use specified algorithms
-
-if algorithm.sievemethod == 'all' and algorithm.divisormethod == 'all':
-    primes = sieves.alg1(limit)
-elif algorithm.sievemethod == 'all' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg2(limit)
-elif algorithm.sievemethod == 'odd' and algorithm.divisormethod == 'all':
-    primes = sieves.alg3(limit)
-elif algorithm.sievemethod == 'odd' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg4(limit)
-elif algorithm.sievemethod == '6k' and algorithm.divisormethod == 'all':
-    primes = sieves.alg5(limit)
-elif algorithm.sievemethod == '6k' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg6(limit)
-elif algorithm.sievemethod == '4k' and algorithm.divisormethod == 'all':
-    primes = sieves.alg7(limit)
-elif algorithm.sievemethod == '4k' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg8(limit)
-elif algorithm.sievemethod == '3k' and algorithm.divisormethod == 'all':
-    primes = sieves.alg9(limit)
-elif algorithm.sievemethod == '3k' and algorithm.divisormethod == 'sqrt':
-    primes = sieves.alg10(limit)
+if algorithm.sievemethod == 'all':
+    primes = sieves.alg_all(divisorfunc, limit)
+elif algorithm.sievemethod=='odd':
+    primes = sieves.alg_odd(divisorfunc, limit)
+elif algorithm.sievemethod == '6k':
+    primes = sieves.alg_6k(divisorfunc, limit)
+elif algorithm.sievemethod == '4k':
+    primes = sieves.alg_4k(divisorfunc, limit)
+elif algorithm.sievemethod == '3k':
+    primes = sieves.alg_3k(divisorfunc, limit)
 #elif method == 'divisors':
 #    primes = sieves.numdivisors(limit)
 else:
