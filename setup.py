@@ -34,7 +34,8 @@ setup(
         keywords = 'prime numbers, sieve of Eratosthenes, sieve algorithms, divisors, number theory',
         package_dir = {'':'src'},
         packages = find_packages(where='src'),
-        install_requires = ['argparse', 'time', 'numpy', 'os'],
+        install_requires = ['argparse', 'numpy'],
+        # The modules time and os are needed but are part of Python's standard library.
+        # Adding them to install_requires causes an error during installation.
     )
-
 
