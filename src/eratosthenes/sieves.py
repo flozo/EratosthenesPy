@@ -64,7 +64,7 @@ def alg_all(divisorfunc, limit):
     Check all numbers
     """
     prime = []
-    for i in range(2, end+1):
+    for i in range(2, limit+1):
         if len(divisorfunc(i)) == 2:
             prime.append(i)
     return prime
