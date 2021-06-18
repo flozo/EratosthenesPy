@@ -18,11 +18,15 @@ def divisors_all(number):
     Determine divisors of number up to number
     """
     divs = []
-    divs.append(1)      # 1 is always divisor
-    for i in range(2, number):
-        if number % i == 0:
-            divs.append(i)
-    divs.append(number) # number itself is always divisor
+    if number < 1:          # 0 has no divisors
+        return divs
+    elif number >= 1:       # 1 is always divisor for number >= 1
+        divs.append(1)
+    if number >= 2:
+        for i in range(2, number):
+            if number % i == 0:
+                divs.append(i)
+        divs.append(number) # number itself is always divisor
     return divs
 
 
@@ -31,12 +35,26 @@ def divisors_sqrt(number):
     Determine all divisors of number up to square root of number
     """
     divs = []
-    divs.append(1)      # 1 is always divisor
-    for i in range(2, int(np.sqrt(number))+1):
-        if number % i == 0:
-            divs.append(i)
-    divs.append(number) # number itself is always divisor
+    if number < 1:          # 0 has no divisors
+        return divs
+    elif number >= 1:       # 1 is always divisor for number >= 1
+        divs.append(1)
+    if number >= 2:
+        for i in range(2, int(np.sqrt(number))+1):
+            if number % i == 0:
+                divs.append(i)
+        divs.append(number) # number itself is always divisor
     return divs
+
+
+def isprime(number):
+    """
+    Just check if number is prime
+    """
+    if len(divisors_sqrt(number)) == 2:
+        return True
+    else:
+        return False
 
 
 # Sieve algorithms
