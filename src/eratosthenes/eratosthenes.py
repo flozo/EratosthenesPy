@@ -26,7 +26,7 @@ def main():
                         'default = single-line output, v = multi-line, vv = detailed, vvv = array output')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help=('disable terminal output (terminates all verbosity)'))
-    parser.add_argument('-s', '--sievemethod', dest='sievemethod', choices=('all', 'odd', '3k', '4k', '6k'), default='6k', help='sieve method')
+    parser.add_argument('-s', '--sievemethod', dest='sievemethod', choices=('all', 'odd', '3k', '4k', '6k', 'list'), default='6k', help='sieve method')
     parser.add_argument('-d', '--divisormethod', dest='divisormethod', choices=('all', 'sqrt'), default='sqrt', help='divisor method')
     parser.add_argument('-a', '--auto-name', dest='autoname', action='store_true', help='generate output filename automatically as Eratosthenes-<limit>-<sievemethod>-<divisormethod>.dat')
     parser.add_argument('limit', type=int, default=100, help='upper limit of test range (a non-negative integer 0, 1, 2, 3, ...)')
@@ -85,6 +85,8 @@ def main():
         primes = sieves.alg_4k(divisorfunc, limit)
     elif algorithm.sievemethod == '3k':
         primes = sieves.alg_3k(divisorfunc, limit)
+    elif algorithm.sievemethod == 'list':
+        primes = sieves.alg_multiples_all(limit)
     #elif method == 'divisors':
     #    primes = sieves.numdivisors(limit)
     if verbosity >= 3:

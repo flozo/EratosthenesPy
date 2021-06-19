@@ -149,6 +149,21 @@ def alg_3k(divisorfunc, limit):
     return prime
 
 
+def alg_multiples_all(limit):
+    """
+    Classical sieve of Eratosthenes with deletion of multiples
+    """
+    nums = list(range(limit+1))
+    for j in range(2, limit+1):
+        for i in range(0, limit+1):
+            if nums[i] in nums[::j][2:]:
+                nums[i] = 0
+    del nums[0]
+    del nums[0]
+    nums = [i for i in nums if i != 0]
+    return nums
+
+
 def numdivisors(end):
     """
     Determine the number of divisors of a number
