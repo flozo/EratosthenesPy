@@ -29,7 +29,7 @@ def main():
     parser.add_argument('-s', '--sievemethod', dest='sievemethod', choices=('all', 'odd', '3k', '4k', '6k'), default='6k', help='sieve method')
     parser.add_argument('-d', '--divisormethod', dest='divisormethod', choices=('all', 'sqrt'), default='sqrt', help='divisor method')
     parser.add_argument('-a', '--auto-name', dest='autoname', action='store_true', help='generate output filename automatically as Eratosthenes-<limit>-<sievemethod>-<divisormethod>.dat')
-    parser.add_argument('limit', type=int, default=100, help='upper limit of test range')
+    parser.add_argument('limit', type=int, default=100, help='upper limit of test range (a non-negative integer 0, 1, 2, 3, ...)')
     parser.add_argument('outfile', nargs='?', help='write to file')
 
     args = parser.parse_args()
@@ -100,7 +100,7 @@ def main():
         if outfile is not None:
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write('# ************ Eratosthenes v{} ************\n'.format(version_str))
-                f.write('# Tested integer range:    [2, {}]\n'.format(limit))
+                f.write('# Tested integer range:    [0, {}]\n'.format(limit))
                 f.write('# Detected prime numbers:  {}\n'.format(len(primes)))
                 f.write('# Applied sieve method:    {}\n'.format(algorithm.sievemethod))
                 f.write('# Applied divisors method: {}\n'.format(algorithm.divisormethod))
@@ -114,7 +114,7 @@ def main():
         if outfile is not None:
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write('# ********** Eratosthenes v{} **********\n'.format(version_str))
-                f.write('# Integer range:           [2, {}]\n'.format(limit))
+                f.write('# Integer range:           [0, {}]\n'.format(limit))
                 f.write('# Applied divisors method: {}\n'.format(algorithm.divisormethod))
                 f.write('# Time:                    {} seconds\n'.format(elapsed))
                 f.write('# **************************************************\n')
