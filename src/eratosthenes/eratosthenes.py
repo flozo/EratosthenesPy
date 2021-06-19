@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 #
-# Eratosthenes v0.10 2021-06-18
+# Eratosthenes v0.11 2021-06-19
 
 # Version
 
-version_num = '0.10'
-version_dat = '2021-06-18'
+version_num = '0.11'
+version_dat = '2021-06-19'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 # Import modules
