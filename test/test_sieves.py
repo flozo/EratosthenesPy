@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Test functions for eratosthenes.sieves
 # v0.1 2021-06-19
 
