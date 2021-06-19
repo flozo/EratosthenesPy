@@ -75,6 +75,7 @@ def alg_odd(divisorfunc, limit):
     Check only odd numbers
     """
     prime = []
+    # Special treatment of small limits (<= 2)
     if limit >= 2:
         prime.append(2)
     for i in range(3, limit+1, 2):
@@ -88,16 +89,18 @@ def alg_6k(divisorfunc, limit):
     Check all numbers of form 6k-1 and 6k+1
     """
     prime = []
+    # Special treatment of small limits (<= 3)
     if limit >= 2:
         prime.append(2)
     if limit >= 3:
         prime.append(3)
-    for i in range(1, (limit-1)//6+1):
+    for i in range(1, (limit+1)//6+1):
         class1 = 6*i-1
         class2 = 6*i+1
         if len(divisorfunc(class1)) == 2:
             prime.append(class1)
-        if len(divisorfunc(class2)) == 2:
+        # Check if class2 exceeds limit:
+        if class2 <= limit and len(divisorfunc(class2)) == 2:
             prime.append(class2)
     return prime
 
@@ -107,16 +110,18 @@ def alg_4k(divisorfunc, limit):
     Check all numbers of form 4k+1 and 4k+3
     """
     prime = []
+    # Special treatment of small limits (<= 3)
     if limit >= 2:
         prime.append(2)
     if limit >= 3:
         prime.append(3)
-    for i in range(1, (limit-3)//4+1):
+    for i in range(1, (limit-1)//4+1):
         class1 = 4*i+1
         class2 = 4*i+3
         if len(divisorfunc(class1)) == 2:
             prime.append(class1)
-        if len(divisorfunc(class2)) == 2:
+        # Check if class2 exceeds limit:
+        if class2 <= limit and len(divisorfunc(class2)) == 2:
             prime.append(class2)
     return prime
 
@@ -126,16 +131,18 @@ def alg_3k(divisorfunc, limit):
     Check all numbers of form 3k+1 and 3k+2
     """
     prime = []
+    # Special treatment of small limits (<= 3)
     if limit >= 2:
         prime.append(2)
     if limit >= 3:
         prime.append(3)
-    for i in range(1, (limit-2)//3+1):
+    for i in range(1, (limit-1)//3+1):
         class1 = 3*i+1
         class2 = 3*i+2
         if len(divisorfunc(class1)) == 2:
             prime.append(class1)
-        if len(divisorfunc(class2)) == 2:
+        # Check if class2 exceeds limit:
+        if class2 <= limit and len(divisorfunc(class2)) == 2:
             prime.append(class2)
     return prime
 
