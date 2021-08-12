@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 #
-# Eratosthenes v0.11 2021-06-19
 
-# Version
-
-version_num = '0.11'
-version_dat = '2021-06-19'
+version_num = '0.12'
+version_dat = '2021-08-12'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 # Import modules
@@ -19,7 +16,7 @@ import sieves
 
 def main():
     # Define argument parsers and subparsers
-    parser = argparse.ArgumentParser(description='A program for testing implementations of the sieve of Eratosthenes. Written by Johannes Engelmayer')
+    parser = argparse.ArgumentParser(description='A program for testing implementations of the sieve of Eratosthenes. (https://github.com/flozo/Eratosthenes)')
     parser.add_argument('-V', '--version', action='version', version='%(prog)s '+ version_str)
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='verbosity level (-v, -vv, -vvv): '

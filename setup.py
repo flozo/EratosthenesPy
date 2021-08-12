@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""
-Setup module for eratosthenes
-"""
 
 from setuptools import setup, find_packages
 import pathlib
@@ -13,13 +10,13 @@ long_description = (here/'README.md').read_text(encoding='utf-8')
 
 setup(
         name = 'eratosthenes',
-        version = '0.11',
+        version = '0.12',
         description = 'A program for testing implementations of the sieve of Eratosthenes.',
         long_description = long_description,
         long_description_content_type = 'text/markdown',
         url = 'https://github.com/flozo/Eratosthenes',
-        author = 'Johannes Engelmayer',
-#        author_email = 'mail@mail.net',
+        author = 'flozo',
+        author_email = 'github.mail@flozo.de',
         classifiers = [
             'Development Status :: 3 - Alpha',
             'Environment :: Console',
