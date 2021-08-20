@@ -152,11 +152,11 @@ def alg_multiples_all(limit):
     return nums
 
 
-def numdivisors(end):
+def numdivisors(end, hide_progress=False):
     """Determine the number of divisors of a number."""
     dividends = np.arange(start=1, stop=end+1, dtype=int)
     divisors = np.arange(start=1, stop=end+1, dtype=int)
-    for i in range(1, len(dividends)+1):
+    for i in tqdm(range(1, len(dividends)+1), disable=hide_progress):
         ndivisors = 0
         for j in range(1, i//2+1):      # only check up to half
             if i % j == 0:
