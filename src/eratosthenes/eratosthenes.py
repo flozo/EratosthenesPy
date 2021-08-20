@@ -8,7 +8,7 @@ import os
 import sieves
 
 # Define version string
-version_num = '0.13'
+version_num = '0.14'
 version_dat = '2021-08-20'
 version_str = '{} ({})'.format(version_num, version_dat)
 
@@ -24,11 +24,13 @@ def main():
                         'default = single-line output, v = multi-line, vv = detailed, vvv = array output')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help=('disable terminal output (terminates all verbosity)'))
+    parser.add_argument('-p', '--progress', action='store_true',
+                        help=('show progress bar'))
     parser.add_argument('-s', '--sievemethod', dest='sievemethod',
                         choices=('all', 'odd', '3k', '4k', '6k', 'list'),
                         default='6k', help='sieve method')
-    parser.add_argument('-d', '--divisormethod', dest='divisormethod',
-                        choices=('all', 'sqrt'), default='sqrt',
+    parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt'),
+                        default='sqrt',
                         help='divisor method')
     parser.add_argument('-a', '--auto-name', dest='autoname',
                         action='store_true',
@@ -46,6 +48,9 @@ def main():
     if verbosity >= 1:
         print(args)
 
+    # Check progress option
+    hide_progress = not(args.progress)
+
     # Process arguments
     limit = int(args.limit)
     algorithm = sieves.Algorithm(args.divisormethod, args.sievemethod)
@@ -58,7 +63,9 @@ def main():
     if args.autoname is False:
         outfile = args.outfile
     else:
-        filename = 'Eratosthenes-{}-{}-{}.dat'.format(limit, args.sievemethod, args.divisormethod)
+        filename = 'Eratosthenes-{}-{}-{}.dat'.format(limit,
+                                                      args.sievemethod,
+                                                      args.divisormethod)
         path = os.path.dirname(args.outfile)
         outfile = os.path.join(path, filename)
         if verbosity >= 1:
@@ -75,15 +82,15 @@ def main():
 
     # Use specified algorithms
     if algorithm.sievemethod == 'all':
-        primes = sieves.alg_all(divisorfunc, limit)
+        primes = sieves.alg_all(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == 'odd':
-        primes = sieves.alg_odd(divisorfunc, limit)
+        primes = sieves.alg_odd(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == '6k':
-        primes = sieves.alg_6k(divisorfunc, limit)
+        primes = sieves.alg_6k(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == '4k':
-        primes = sieves.alg_4k(divisorfunc, limit)
+        primes = sieves.alg_4k(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == '3k':
-        primes = sieves.alg_3k(divisorfunc, limit)
+        primes = sieves.alg_3k(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == 'list':
         primes = sieves.alg_multiples_all(limit)
     # elif method == 'divisors':
@@ -103,6 +110,7 @@ def main():
                 f.write('# Detected prime numbers:  {}\n'.format(len(primes)))
                 f.write('# Applied sieve method:    {}\n'.format(algorithm.sievemethod))
                 f.write('# Applied divisors method: {}\n'.format(algorithm.divisormethod))
+                f.write('# Progress bar active:     {}\n'.format(args.progress))
                 f.write('# Sifting time:            {} seconds\n'.format(elapsed))
                 f.write('# ********************************************************\n')
                 for i in range(len(primes)):

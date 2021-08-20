@@ -2,6 +2,7 @@
 """Collection of sieve algorithms."""
 
 import numpy as np
+from tqdm import tqdm
 
 
 class Algorithm(object):
@@ -59,28 +60,28 @@ def isprime(number):
 
 # Sieve algorithms
 
-def alg_all(divisorfunc, limit):
+def alg_all(divisorfunc, limit, hide_progress=False):
     """Check all numbers."""
     prime = []
-    for i in range(2, limit+1):
+    for i in tqdm(range(2, limit+1), disable=hide_progress):
         if len(divisorfunc(i)) == 2:
             prime.append(i)
     return prime
 
 
-def alg_odd(divisorfunc, limit):
+def alg_odd(divisorfunc, limit, hide_progress=False):
     """Check only odd numbers."""
     prime = []
     # Special treatment of small limits (<= 2)
     if limit >= 2:
         prime.append(2)
-    for i in range(3, limit+1, 2):
+    for i in tqdm(range(3, limit+1, 2), disable=hide_progress):
         if len(divisorfunc(i)) == 2:
             prime.append(i)
     return prime
 
 
-def alg_6k(divisorfunc, limit):
+def alg_6k(divisorfunc, limit, hide_progress=False):
     """Check all numbers of form 6k-1 and 6k+1."""
     prime = []
     # Special treatment of small limits (<= 3)
@@ -88,7 +89,7 @@ def alg_6k(divisorfunc, limit):
         prime.append(2)
     if limit >= 3:
         prime.append(3)
-    for i in range(1, (limit+1)//6+1):
+    for i in tqdm(range(1, (limit+1)//6+1), disable=hide_progress):
         class1 = 6*i-1
         class2 = 6*i+1
         if len(divisorfunc(class1)) == 2:
@@ -96,10 +97,11 @@ def alg_6k(divisorfunc, limit):
         # Check if class2 exceeds limit:
         if class2 <= limit and len(divisorfunc(class2)) == 2:
             prime.append(class2)
+        # progbar.update(1)
     return prime
 
 
-def alg_4k(divisorfunc, limit):
+def alg_4k(divisorfunc, limit, hide_progress=False):
     """Check all numbers of form 4k+1 and 4k+3."""
     prime = []
     # Special treatment of small limits (<= 3)
@@ -107,7 +109,7 @@ def alg_4k(divisorfunc, limit):
         prime.append(2)
     if limit >= 3:
         prime.append(3)
-    for i in range(1, (limit-1)//4+1):
+    for i in tqdm(range(1, (limit-1)//4+1), disable=hide_progress):
         class1 = 4*i+1
         class2 = 4*i+3
         if len(divisorfunc(class1)) == 2:
@@ -118,7 +120,7 @@ def alg_4k(divisorfunc, limit):
     return prime
 
 
-def alg_3k(divisorfunc, limit):
+def alg_3k(divisorfunc, limit, hide_progress=False):
     """Check all numbers of form 3k+1 and 3k+2."""
     prime = []
     # Special treatment of small limits (<= 3)
@@ -126,7 +128,7 @@ def alg_3k(divisorfunc, limit):
         prime.append(2)
     if limit >= 3:
         prime.append(3)
-    for i in range(1, (limit-1)//3+1):
+    for i in tqdm(range(1, (limit-1)//3+1), disable=hide_progress):
         class1 = 3*i+1
         class2 = 3*i+2
         if len(divisorfunc(class1)) == 2:

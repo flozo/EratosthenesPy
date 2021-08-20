@@ -11,7 +11,7 @@ long_description = (here/'README.md').read_text(encoding='utf-8')
 
 setup(
         name='eratosthenes',
-        version='0.13',
+        version='0.14',
         description='A program for testing implementations of the sieve of Eratosthenes.',
         long_description=long_description,
         long_description_content_type='text/markdown',
@@ -33,5 +33,5 @@ setup(
         keywords='prime numbers, sieve of Eratosthenes, sieve algorithms, divisors, number theory',
         package_dir={'': 'src'},
         packages=find_packages(where='src'),
-        install_requires=['argparse', 'numpy'],
+        install_requires=['argparse', 'numpy', 'tqdm'],
     )
