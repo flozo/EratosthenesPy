@@ -8,7 +8,7 @@ import os
 import sieves
 
 # Define version string
-version_num = '0.15'
+version_num = '0.16'
 version_dat = '2021-08-20'
 version_str = '{} ({})'.format(version_num, version_dat)
 
@@ -111,10 +111,10 @@ def main():
             ['Applied sieve method', algorithm.sievemethod],
             ['Applied divisors method', algorithm.divisormethod],
             ['Progress bar active', str(args.progress)],
-            ['Sifting time', elapsed],
+            ['Sifting time', '{:.9f} seconds'.format(elapsed)],
             ]
         if verbosity >= 0:
-            print('[result] Detected {} prime numbers in {:.5f} seconds.'.format(len(primes), elapsed))
+            print('[result] Detected {} prime numbers in {:.9f} seconds.'.format(len(primes), elapsed))
         if outfile is not None:
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
@@ -128,10 +128,10 @@ def main():
             ['Integer range', '[0, {}]'.format(limit)],
             ['Applied divisors method', algorithm.divisormethod],
             ['Progress bar active', str(args.progress)],
-            ['Time', elapsed],
+            ['Time', '{:.9f} seconds'.format(elapsed)],
             ]
         if verbosity >= 0:
-            print('Created divisor list in the rage [1, {}] in {:5f} seconds'.format(limit, elapsed))
+            print('Created divisor list in the rage [1, {}] in {:.9f} seconds'.format(limit, elapsed))
         if outfile is not None:
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
