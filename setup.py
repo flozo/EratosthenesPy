@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Setup module for Eratosthenes."""
 
 from setuptools import setup, find_packages
 import pathlib
@@ -9,15 +10,15 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here/'README.md').read_text(encoding='utf-8')
 
 setup(
-        name = 'eratosthenes',
-        version = '0.12',
-        description = 'A program for testing implementations of the sieve of Eratosthenes.',
-        long_description = long_description,
-        long_description_content_type = 'text/markdown',
-        url = 'https://github.com/flozo/Eratosthenes',
-        author = 'flozo',
-        author_email = 'github.mail@flozo.de',
-        classifiers = [
+        name='eratosthenes',
+        version='0.13',
+        description='A program for testing implementations of the sieve of Eratosthenes.',
+        long_description=long_description,
+        long_description_content_type='text/markdown',
+        url='https://github.com/flozo/Eratosthenes',
+        author='flozo',
+        author_email='github.mail@flozo.de',
+        classifiers=[
             'Development Status :: 3 - Alpha',
             'Environment :: Console',
             'Intended Audience :: Developers',
@@ -29,11 +30,8 @@ setup(
             'Topic :: Scientific/Engineering',
             'Topic :: Scientific/Engineering :: Mathematics',
             ],
-        keywords = 'prime numbers, sieve of Eratosthenes, sieve algorithms, divisors, number theory',
-        package_dir = {'':'src'},
-        packages = find_packages(where='src'),
-        install_requires = ['argparse', 'numpy'],
-        # The modules time and os are needed but are part of Python's standard library.
-        # Adding them to install_requires causes an error during installation.
+        keywords='prime numbers, sieve of Eratosthenes, sieve algorithms, divisors, number theory',
+        package_dir={'': 'src'},
+        packages=find_packages(where='src'),
+        install_requires=['argparse', 'numpy'],
     )
-

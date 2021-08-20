@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
+"""Collection of sieve algorithms."""
 
 import numpy as np
+
 
 class Algorithm(object):
     """
     Define algorithm class with divisor method and sieve method.
+
     Divisor method can be: sqrt(default), all.
     Sieve method can be: all, 6k(default), 4k, 3k, odd.
     """
+
     def __init__(self, divisormethod='sqrt', sievemethod='6k'):
         self.divisormethod = divisormethod
         self.sievemethod = sievemethod
@@ -16,43 +20,37 @@ class Algorithm(object):
 # Divisor algorithms
 
 def divisors_all(number):
-    """
-    Determine divisors of number up to number
-    """
+    """Determine divisors of number up to number."""
     divs = []
-    if number < 1:          # 0 has no divisors
+    if number < 1:              # 0 has no divisors
         return divs
-    elif number >= 1:       # 1 is always divisor for number >= 1
+    elif number >= 1:           # 1 is always divisor for number >= 1
         divs.append(1)
     if number >= 2:
         for i in range(2, number):
             if number % i == 0:
                 divs.append(i)
-        divs.append(number) # number itself is always divisor
+        divs.append(number)     # number itself is always divisor
     return divs
 
 
 def divisors_sqrt(number):
-    """
-    Determine all divisors of number up to square root of number
-    """
+    """Determine all divisors of number up to square root of number."""
     divs = []
-    if number < 1:          # 0 has no divisors
+    if number < 1:              # 0 has no divisors
         return divs
-    elif number >= 1:       # 1 is always divisor for number >= 1
+    elif number >= 1:           # 1 is always divisor for number >= 1
         divs.append(1)
     if number >= 2:
         for i in range(2, int(np.sqrt(number))+1):
             if number % i == 0:
                 divs.append(i)
-        divs.append(number) # number itself is always divisor
+        divs.append(number)     # number itself is always divisor
     return divs
 
 
 def isprime(number):
-    """
-    Just check if number is prime
-    """
+    """Check if number is prime."""
     if len(divisors_sqrt(number)) == 2:
         return True
     else:
@@ -62,9 +60,7 @@ def isprime(number):
 # Sieve algorithms
 
 def alg_all(divisorfunc, limit):
-    """
-    Check all numbers
-    """
+    """Check all numbers."""
     prime = []
     for i in range(2, limit+1):
         if len(divisorfunc(i)) == 2:
@@ -73,9 +69,7 @@ def alg_all(divisorfunc, limit):
 
 
 def alg_odd(divisorfunc, limit):
-    """
-    Check only odd numbers
-    """
+    """Check only odd numbers."""
     prime = []
     # Special treatment of small limits (<= 2)
     if limit >= 2:
@@ -87,9 +81,7 @@ def alg_odd(divisorfunc, limit):
 
 
 def alg_6k(divisorfunc, limit):
-    """
-    Check all numbers of form 6k-1 and 6k+1
-    """
+    """Check all numbers of form 6k-1 and 6k+1."""
     prime = []
     # Special treatment of small limits (<= 3)
     if limit >= 2:
@@ -108,9 +100,7 @@ def alg_6k(divisorfunc, limit):
 
 
 def alg_4k(divisorfunc, limit):
-    """
-    Check all numbers of form 4k+1 and 4k+3
-    """
+    """Check all numbers of form 4k+1 and 4k+3."""
     prime = []
     # Special treatment of small limits (<= 3)
     if limit >= 2:
@@ -129,9 +119,7 @@ def alg_4k(divisorfunc, limit):
 
 
 def alg_3k(divisorfunc, limit):
-    """
-    Check all numbers of form 3k+1 and 3k+2
-    """
+    """Check all numbers of form 3k+1 and 3k+2."""
     prime = []
     # Special treatment of small limits (<= 3)
     if limit >= 2:
@@ -150,9 +138,7 @@ def alg_3k(divisorfunc, limit):
 
 
 def alg_multiples_all(limit):
-    """
-    Classical sieve of Eratosthenes with deletion of multiples
-    """
+    """Classical sieve of Eratosthenes with deletion of multiples."""
     nums = list(range(limit+1))
     for j in range(2, limit+1):
         for i in range(0, limit+1):
@@ -165,17 +151,14 @@ def alg_multiples_all(limit):
 
 
 def numdivisors(end):
-    """
-    Determine the number of divisors of a number
-    """
+    """Determine the number of divisors of a number."""
     dividends = np.arange(start=1, stop=end+1, dtype=int)
     divisors = np.arange(start=1, stop=end+1, dtype=int)
     for i in range(1, len(dividends)+1):
         ndivisors = 0
-        for j in range(1, i//2+1):  # only check up to half
-            if i % j ==0:
+        for j in range(1, i//2+1):      # only check up to half
+            if i % j == 0:
                 ndivisors += 1
-        divisors[i-1] = ndivisors+1 # add 1 for dividend itself
+        divisors[i-1] = ndivisors+1     # add 1 for dividend itself
     new = np.column_stack([dividends, divisors])
     return new
-
