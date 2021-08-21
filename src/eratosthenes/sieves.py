@@ -50,6 +50,22 @@ def divisors_sqrt(number):
     return divs
 
 
+def divisors_sqrt_break(number):
+    """Check if number has more than 2 divisors up to square root of number."""
+    divs = []
+    if number < 1:              # 0 has no divisors
+        return divs
+    elif number >= 1:           # 1 is always divisor for number >= 1
+        divs.append(1)
+    if number >= 2:
+        for i in range(2, int(np.sqrt(number))+1):
+            if number % i == 0:
+                divs.append(i)
+                break
+        divs.append(number)     # number itself is always divisor
+    return divs
+
+
 def isprime(number):
     """Check if number is prime."""
     if len(divisors_sqrt(number)) == 2:

@@ -29,7 +29,7 @@ def main():
     parser.add_argument('-s', '--sievemethod', dest='sievemethod',
                         choices=('all', 'odd', '3k', '4k', '6k', 'list', 'list-np', 'divisors'),
                         default='6k', help='sieve method')
-    parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt'),
+    parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt', 'sqrt-break'),
                         default='sqrt', help='divisor method')
     parser.add_argument('-a', '--auto-name', dest='autoname',
                         action='store_true',
@@ -57,6 +57,8 @@ def main():
         divisorfunc = sieves.divisors_all
     elif args.divisormethod == 'sqrt':
         divisorfunc = sieves.divisors_sqrt
+    elif args.divisormethod == 'sqrt-break':
+        divisorfunc = sieves.divisors_sqrt_break
 
     # If autoname option is not used, take outfile argument, else generate auto filename
     if args.autoname is False:
