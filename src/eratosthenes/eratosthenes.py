@@ -8,8 +8,8 @@ import os
 import sieves
 
 # Define version string
-version_num = '0.16'
-version_dat = '2021-08-20'
+version_num = '0.17'
+version_dat = '2021-08-21'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 
@@ -91,7 +91,7 @@ def main():
     elif algorithm.sievemethod == '3k':
         primes = sieves.alg_3k(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == 'list':
-        primes = sieves.alg_multiples_all(limit)
+        primes = sieves.alg_multiples_all(limit, hide_progress)
     elif algorithm.sievemethod == 'divisors':
         primes = sieves.numdivisors(limit, hide_progress)
     if verbosity >= 3:
