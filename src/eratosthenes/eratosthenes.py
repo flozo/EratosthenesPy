@@ -21,7 +21,7 @@ def main():
                         version='%(prog)s '+ version_str)
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='verbosity level (-v, -vv, -vvv): '
-                        'default = single-line output, v = multi-line, vv = detailed, vvv = array output')
+                        'default = single-line output, v = multi-line, vv = detailed')
     parser.add_argument('-q', '--quiet', action='store_true',
                         help=('disable terminal output (terminates all verbosity)'))
     parser.add_argument('-p', '--progress', action='store_true',
@@ -33,10 +33,10 @@ def main():
                         default='sqrt', help='divisor method')
     parser.add_argument('-a', '--auto-name', dest='autoname',
                         action='store_true',
-                        help='generate output filename automatically as Eratosthenes-<limit>-<sievemethod>-<divisormethod>.dat')
+                        help='generate name for output file automatically as \'Eratosthenes_<limit>_<sievemethod>_<divisormethod>.dat\' with path from [outfile]')
     parser.add_argument('limit', type=int, default=100,
-                        help='upper limit of test range (a non-negative integer 0, 1, 2, 3, ...)')
-    parser.add_argument('outfile', nargs='?', help='write to file')
+                        help='upper limit of test range (a non-negative integer)')
+    parser.add_argument('outfile', nargs='?', help='write to file \'outfile\'')
 
     args = parser.parse_args()
 
@@ -62,7 +62,7 @@ def main():
     if args.autoname is False:
         outfile = args.outfile
     else:
-        filename = 'Eratosthenes-{}-{}-{}.dat'.format(limit,
+        filename = 'Eratosthenes_{}_{}_{}.dat'.format(limit,
                                                       args.sievemethod,
                                                       args.divisormethod)
         path = os.path.dirname(args.outfile)
@@ -96,7 +96,7 @@ def main():
         primes = sieves.alg_multiples_all_np(limit, hide_progress)
     elif algorithm.sievemethod == 'divisors':
         primes = sieves.numdivisors(limit, hide_progress)
-    if verbosity >= 3:
+    if verbosity >= 2:
         print(primes)
     elapsed = (time.process_time() - start)
 
