@@ -27,7 +27,7 @@ def main():
     parser.add_argument('-p', '--progress', action='store_true',
                         help=('show progress bar'))
     parser.add_argument('-s', '--sievemethod', dest='sievemethod',
-                        choices=('all', 'odd', '3k', '4k', '6k', 'list', 'divisors'),
+                        choices=('all', 'odd', '3k', '4k', '6k', 'list', 'list-np', 'divisors'),
                         default='6k', help='sieve method')
     parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt'),
                         default='sqrt', help='divisor method')
@@ -92,6 +92,8 @@ def main():
         primes = sieves.alg_3k(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == 'list':
         primes = sieves.alg_multiples_all(limit, hide_progress)
+    elif algorithm.sievemethod == 'list-np':
+        primes = sieves.alg_multiples_all_np(limit, hide_progress)
     elif algorithm.sievemethod == 'divisors':
         primes = sieves.numdivisors(limit, hide_progress)
     if verbosity >= 3:
