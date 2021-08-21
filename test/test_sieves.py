@@ -24,17 +24,29 @@ def test_divisors_sqrt():
     assert sv.divisors_sqrt(360) == result360
 
 
-def test_isprime():
+def test_isprime_all_break():
+    primes = [2, 3, 5, 991429]
+    composites = [4, 6, 12, 360, 12345678902]
+    other_nonprimes = [0, 1]
+    for prime in primes:
+        assert sv.isprime_all_break(prime) is True
+    for composite in composites:
+        assert sv.isprime_all_break(composite) is False
+    for other_nonprime in other_nonprimes:
+        assert sv.isprime_all_break(other_nonprime) is False
+
+
+def test_isprime_sqrt_break():
     primes = [2, 3, 5, 991429, 188748146801, 492366587, 7596952219,
               32212254719]
     composites = [4, 6, 12, 360, 12345678902]
     other_nonprimes = [0, 1]
     for prime in primes:
-        assert sv.isprime(prime) is True
+        assert sv.isprime_sqrt_break(prime) is True
     for composite in composites:
-        assert sv.isprime(composite) is False
+        assert sv.isprime_sqrt_break(composite) is False
     for other_nonprime in other_nonprimes:
-        assert sv.isprime(other_nonprime) is False
+        assert sv.isprime_sqrt_break(other_nonprime) is False
 
 
 # Expected results (independent of sieve algorithm)
@@ -59,24 +71,24 @@ primesdict = {
 # Sieve algorithms
 def test_alg_all():
     for key in primesdict:
-        assert sv.alg_all(sv.divisors_all, key) == primesdict[key]
+        assert sv.alg_all(sv.isprime_all_break, key, True) == primesdict[key]
 
 
 def test_alg_odd():
     for key in primesdict:
-        assert sv.alg_odd(sv.divisors_all, key) == primesdict[key]
+        assert sv.alg_odd(sv.isprime_all_break, key, True) == primesdict[key]
 
 
 def test_alg_6k():
     for key in primesdict:
-        assert sv.alg_6k(sv.divisors_all, key) == primesdict[key]
+        assert sv.alg_6k(sv.isprime_all_break, key, True) == primesdict[key]
 
 
 def test_alg_4k():
     for key in primesdict:
-        assert sv.alg_4k(sv.divisors_all, key) == primesdict[key]
+        assert sv.alg_4k(sv.isprime_all_break, key, True) == primesdict[key]
 
 
 def test_alg_3k():
     for key in primesdict:
-        assert sv.alg_3k(sv.divisors_all, key) == primesdict[key]
+        assert sv.alg_3k(sv.isprime_all_break, key, True) == primesdict[key]

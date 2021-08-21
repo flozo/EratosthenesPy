@@ -50,28 +50,28 @@ def divisors_sqrt(number):
     return divs
 
 
-def divisors_sqrt_break(number):
+# Prime-check algorithms
+
+def isprime_all_break(number):
+    """Check if number has more than 2 divisors up to number."""
+    if number < 2:                  # 0 and 1 are not prime
+        return False
+    if number >= 2:
+        for i in range(2, number):
+            if number % i == 0:     # check for divisor other than 1 or number
+                return False
+        return True
+
+
+def isprime_sqrt_break(number):
     """Check if number has more than 2 divisors up to square root of number."""
-    divs = []
-    if number < 1:              # 0 has no divisors
-        return divs
-    elif number >= 1:           # 1 is always divisor for number >= 1
-        divs.append(1)
+    if number < 2:                  # 0 and 1 are not prime
+        return False
     if number >= 2:
         for i in range(2, int(np.sqrt(number))+1):
-            if number % i == 0:
-                divs.append(i)
-                break
-        divs.append(number)     # number itself is always divisor
-    return divs
-
-
-def isprime(number):
-    """Check if number is prime."""
-    if len(divisors_sqrt(number)) == 2:
+            if number % i == 0:     # check for divisor other than 1 or number
+                return False
         return True
-    else:
-        return False
 
 
 # Sieve algorithms
@@ -80,7 +80,7 @@ def alg_all(divisorfunc, limit, hide_progress=False):
     """Check all numbers."""
     prime = []
     for i in tqdm(range(2, limit+1), disable=hide_progress):
-        if len(divisorfunc(i)) == 2:
+        if divisorfunc(i) is True:
             prime.append(i)
     return prime
 
@@ -92,7 +92,7 @@ def alg_odd(divisorfunc, limit, hide_progress=False):
     if limit >= 2:
         prime.append(2)
     for i in tqdm(range(3, limit+1, 2), disable=hide_progress):
-        if len(divisorfunc(i)) == 2:
+        if divisorfunc(i) is True:
             prime.append(i)
     return prime
 
@@ -108,12 +108,11 @@ def alg_6k(divisorfunc, limit, hide_progress=False):
     for i in tqdm(range(1, (limit+1)//6+1), disable=hide_progress):
         class1 = 6*i-1
         class2 = 6*i+1
-        if len(divisorfunc(class1)) == 2:
+        if divisorfunc(class1) is True:
             prime.append(class1)
         # Check if class2 exceeds limit:
-        if class2 <= limit and len(divisorfunc(class2)) == 2:
+        if class2 <= limit and divisorfunc(class2) is True:
             prime.append(class2)
-        # progbar.update(1)
     return prime
 
 
@@ -128,10 +127,10 @@ def alg_4k(divisorfunc, limit, hide_progress=False):
     for i in tqdm(range(1, (limit-1)//4+1), disable=hide_progress):
         class1 = 4*i+1
         class2 = 4*i+3
-        if len(divisorfunc(class1)) == 2:
+        if divisorfunc(class1) is True:
             prime.append(class1)
         # Check if class2 exceeds limit:
-        if class2 <= limit and len(divisorfunc(class2)) == 2:
+        if class2 <= limit and divisorfunc(class2) is True:
             prime.append(class2)
     return prime
 
@@ -147,10 +146,10 @@ def alg_3k(divisorfunc, limit, hide_progress=False):
     for i in tqdm(range(1, (limit-1)//3+1), disable=hide_progress):
         class1 = 3*i+1
         class2 = 3*i+2
-        if len(divisorfunc(class1)) == 2:
+        if divisorfunc(class1) is True:
             prime.append(class1)
         # Check if class2 exceeds limit:
-        if class2 <= limit and len(divisorfunc(class2)) == 2:
+        if class2 <= limit and divisorfunc(class2) is True:
             prime.append(class2)
     return prime
 
