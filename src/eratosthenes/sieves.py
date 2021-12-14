@@ -168,7 +168,7 @@ def alg_multiples_all(limit, hide_progress=False):
 
 
 def alg_multiples_all_np(limit, hide_progress=False):
-    """Classical sieve of Eratosthenes with deletion of multiples. Numpy version."""
+    """Classical sieve of Eratosthenes with deletion of multiples (Numpy version)."""
     nums = np.arange(2, limit+1)
     for j in tqdm(range(2, limit+1), disable=hide_progress):
         multiples = np.arange(j, limit+1, j)

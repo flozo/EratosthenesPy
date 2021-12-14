@@ -4,103 +4,79 @@
 # Import modules
 import argparse
 import time
-import os
+import functions as fn
 import sieves
 
 # Define version string
-version_num = '0.18'
-version_dat = '2021-08-21'
+version_num = '0.19'
+version_dat = '2021-12-14'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 
 def main():
     """Define argument parses, process arguments and call functions."""
     # Define argument parsers and subparsers
-    parser = argparse.ArgumentParser(description='A program for testing implementations of the sieve of Eratosthenes. (https://github.com/flozo/Eratosthenes)')
+    parser = argparse.ArgumentParser(description='A program for testing '
+                                     'implementations of the sieve of '
+                                     'Eratosthenes. '
+                                     '(https://github.com/flozo/Eratosthenes)')
     parser.add_argument('-V', '--version', action='version',
-                        version='%(prog)s '+ version_str)
+                        version='%(prog)s ' + version_str)
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help='verbosity level (-v, -vv, -vvv): '
-                        'default = single-line output, v = multi-line, vv = detailed')
+                        'default = single-line output, v = multi-line, '
+                        'vv = detailed')
     parser.add_argument('-q', '--quiet', action='store_true',
-                        help=('disable terminal output (terminates all verbosity)'))
+                        help=('disable terminal output (terminates all '
+                              'verbosity)'))
     parser.add_argument('-p', '--progress', action='store_true',
                         help=('show progress bar'))
     parser.add_argument('-s', '--sievemethod', dest='sievemethod',
-                        choices=('all', 'odd', '3k', '4k', '6k', 'list', 'list-np', 'divisors'),
+                        choices=('all', 'odd', '3k', '4k', '6k', 'list',
+                                 'list-np', 'divisors'),
                         default='6k', help='sieve method')
     parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt'),
                         default='sqrt', help='divisor method')
     parser.add_argument('-a', '--auto-name', dest='autoname',
                         action='store_true',
-                        help='generate name for output file automatically as \'Eratosthenes_<limit>_<sievemethod>_<divisormethod>.dat\' with path from [outfile]')
+                        help='generate name for output file automatically as '
+                        '\'Eratosthenes_<limit>_<sievemethod>_<divisormethod>.'
+                        'dat\' with path from [outfile]')
     parser.add_argument('limit', type=int, default=100,
-                        help='upper limit of test range (a non-negative integer)')
+                        help='upper limit of test range (a non-negative '
+                        'integer)')
     parser.add_argument('outfile', nargs='?', help='write to file \'outfile\'')
 
     args = parser.parse_args()
 
-    # Check verbosity level
-    verbosity = args.verbose
-    if args.quiet is True:
-        verbosity = -1
+    # Translate verbosity level
+    verbosity = fn.verbosity_level(args)
+
+    # Print argument list if -v, -vv, or -vvv
     if verbosity >= 1:
         print(args)
 
-    # Check progress option
+    # Translate progress option
     hide_progress = not(args.progress)
 
-    # Process arguments
-    limit = int(args.limit)
+    # Select divisor method
+    divisorfunc = fn.select_divisormethod(args)
+    # Generate automatic filename
+    outfile = fn.auto_filename(args, verbosity)
+    # Define algorithm
     algorithm = sieves.Algorithm(args.divisormethod, args.sievemethod)
-    if args.divisormethod == 'all':
-        divisorfunc = sieves.isprime_all_break
-    elif args.divisormethod == 'sqrt':
-        divisorfunc = sieves.isprime_sqrt_break
-    # elif args.divisormethod == 'sqrt-break':
-    #     divisorfunc = sieves.divisors_sqrt_break
-
-    # If autoname option is not used, take outfile argument, else generate auto filename
-    if args.autoname is False:
-        outfile = args.outfile
-    else:
-        filename = 'Eratosthenes_{}_{}_{}.dat'.format(limit,
-                                                      args.sievemethod,
-                                                      args.divisormethod)
-        path = os.path.dirname(args.outfile)
-        outfile = os.path.join(path, filename)
-        if verbosity >= 1:
-            print('[auto-name] Using option --auto-name')
-            print('[auto-name] Composing output filename from limit ({}), sieve method ({}), and divisor method ({}).'.format(limit, args.sievemethod, args.divisormethod))
-            print('[auto-name] Generated auto filename: {}'.format(filename))
-            print('[auto-name] Using path from positional argument outfile: {}'.format(path))
-    if verbosity >= 1:
-        if args.outfile is None:
-            print('[output] No output file specified. No file output.')
-        else:
-            print('[output] Writing output to: {}'.format(outfile))
+    # Make limit integer
+    limit = int(args.limit)
+    # Start timer
     start = time.process_time()
-
-    # Use specified algorithms
-    if algorithm.sievemethod == 'all':
-        primes = sieves.alg_all(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == 'odd':
-        primes = sieves.alg_odd(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == '6k':
-        primes = sieves.alg_6k(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == '4k':
-        primes = sieves.alg_4k(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == '3k':
-        primes = sieves.alg_3k(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == 'list':
-        primes = sieves.alg_multiples_all(limit, hide_progress)
-    elif algorithm.sievemethod == 'list-np':
-        primes = sieves.alg_multiples_all_np(limit, hide_progress)
-    elif algorithm.sievemethod == 'divisors':
-        primes = sieves.numdivisors(limit, hide_progress)
+    # Determine prime numbers
+    primes = fn.select_algorithm(algorithm, divisorfunc, limit, hide_progress,
+                                 verbosity)
+    # Stop timer
+    elapsed = (time.process_time() - start)
+    # Print result if -vv or -vvv
     if verbosity >= 2:
         print(primes)
-    elapsed = (time.process_time() - start)
 
     # Generate output
     title = 'Eratosthenes v{}'.format(version_str)
@@ -118,7 +94,8 @@ def main():
             ['Sifting time', '{:.9f} seconds'.format(elapsed)],
             ]
         if verbosity >= 0:
-            print('[result] Detected {} prime numbers in {:.9f} seconds.'.format(len(primes), elapsed))
+            print('[result] Detected {} prime numbers in {:.9f} '
+                  'seconds.'.format(len(primes), elapsed))
         if outfile is not None:
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
@@ -135,7 +112,8 @@ def main():
             ['Time', '{:.9f} seconds'.format(elapsed)],
             ]
         if verbosity >= 0:
-            print('Created divisor list in the rage [1, {}] in {:.9f} seconds'.format(limit, elapsed))
+            print('Created divisor list in the rage [1, {}] in {:.9f} '
+                  'seconds'.format(limit, elapsed))
         if outfile is not None:
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
