@@ -71,3 +71,52 @@ def auto_filename(args, verbosity):
         else:
             print('[output] Writing output to: {}'.format(outfile))
     return outfile
+
+
+def output(result, outfile, verbosity):
+    """Generate output file."""
+    title = 'Eratosthenes v{}'.format(result.version)
+    header_width = len(title) // 3 * 3
+    header_top = '# {0} {1} {0}\n'.format('*' * int(header_width // 3), title)
+    header_closing = '# {}\n'.format('*' * (len(header_top) - 3))
+
+    if result.sievemethod != 'divisors':
+        header = [
+            ['Tested integer range', '[0, {}]'.format(result.limit)],
+            ['Detected prime numbers', result.num_primes],
+            ['Applied sieve method', result.sievemethod],
+            ['Applied divisors method', result.divisormethod],
+            ['Progress bar active', result.progress_bar_active],
+            ['Sifting time', '{:.9f} seconds'.format(result.elapsed_time)],
+            ]
+        if verbosity >= 0:
+            print('[result] Detected {} prime numbers in {:.9f} '
+                  'seconds.'.format(result.num_primes, result.elapsed_time))
+        if outfile is not None:
+            with open(outfile, 'w', encoding='UTF-8') as f:
+                f.write(header_top)
+                for item in header:
+                    f.write('# {:<25} {:<25}\n'.format(item[0], item[1]))
+                f.write(header_closing)
+                for i in range(result.num_primes):
+                    f.write('{}\n'.format(result.primes[i]))
+    else:
+        header = [
+            ['Integer range', '[0, {}]'.format(result.limit)],
+            ['Applied divisors method', result.divisormethod],
+            ['Progress bar active', result.progress_bar_active],
+            ['Time', '{:.9f} seconds'.format(result.elapsed_time)],
+            ]
+        if verbosity >= 0:
+            print('Created divisor list in the rage [1, {}] in {:.9f} '
+                  'seconds'.format(result.limit, result.elapsed_time))
+        if outfile is not None:
+            with open(outfile, 'w', encoding='UTF-8') as f:
+                f.write(header_top)
+                for item in header:
+                    f.write('# {:<25} {:<25}\n'.format(item[0], item[1]))
+                f.write(header_closing)
+                f.write('# Number\tDivisors\n')
+                for i in range(result.num_primes):
+                    f.write('{}\t{}\n'.format(result.primes[i][0],
+                                              result.primes[i][1]))

@@ -11,8 +11,9 @@ long_description = (here/'README.md').read_text(encoding='utf-8')
 
 setup(
         name='eratosthenes',
-        version='0.19',
-        description='A program for testing implementations of the sieve of Eratosthenes.',
+        version='0.20',
+        description='A program for testing implementations of the sieve of '
+        'Eratosthenes.',
         long_description=long_description,
         long_description_content_type='text/markdown',
         url='https://github.com/flozo/Eratosthenes',
@@ -22,7 +23,8 @@ setup(
             'Development Status :: 3 - Alpha',
             'Environment :: Console',
             'Intended Audience :: Developers',
-            'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+            'License :: OSI Approved :: GNU General Public License v3 or '
+            'later (GPLv3+)',
             'Programming Language :: Python :: 3',
             'Programming Language :: Python :: 3.6',
             'Topic :: Education',
@@ -30,7 +32,8 @@ setup(
             'Topic :: Scientific/Engineering',
             'Topic :: Scientific/Engineering :: Mathematics',
             ],
-        keywords='prime numbers, sieve of Eratosthenes, sieve algorithms, divisors, number theory',
+        keywords='prime numbers, sieve of Eratosthenes, sieve algorithms, '
+        'divisors, number theory',
         package_dir={'': 'src'},
         packages=find_packages(where='src'),
         install_requires=['argparse', 'numpy', 'tqdm'],

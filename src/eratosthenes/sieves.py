@@ -5,19 +5,6 @@ import numpy as np
 from tqdm import tqdm
 
 
-class Algorithm(object):
-    """
-    Define algorithm class with divisor method and sieve method.
-
-    Divisor method can be: sqrt(default), all.
-    Sieve method can be: all, 6k(default), 4k, 3k, odd.
-    """
-
-    def __init__(self, divisormethod='sqrt', sievemethod='6k'):
-        self.divisormethod = divisormethod
-        self.sievemethod = sievemethod
-
-
 # Divisor algorithms
 
 def divisors_all(number):
