@@ -66,19 +66,33 @@ def auto_filename(args, verbosity):
         path = os.path.dirname(args.outfile)
         outfile = os.path.join(path, filename)
         if verbosity >= 1:
-            print('[auto-name] Using option --auto-name')
             print('[auto-name] Composing output filename from '
-                  'limit ({}), sieve method ({}), divisor method ({}), and '
-                  'writing mode ({}).'.format(args.limit, args.sievemethod,
-                                              args.divisormethod, args.mode))
-            print('[auto-name] Generated auto filename: {}'.format(filename))
+                  'limit (\'{}\'), sieve method (\'{}\'), divisor '
+                  'method (\'{}\'), and writing mode '
+                  '(\'{}\').'.format(args.limit, args.sievemethod,
+                                     args.divisormethod, args.mode))
+            print('[auto-name] Generated auto filename: '
+                  '\'{}\''.format(filename))
             print('[auto-name] Using path from positional argument outfile: '
-                  '{}'.format(path))
+                  '\'{}\''.format(path))
+    if verbosity >= 1:
+        print('[mode] On-the-fly writing mode is \'{}\'.'.format(args.mode))
+        if args.mode == 'memory':
+            print('[mode] First write to array; after completion write '
+                  'to file.')
+            print('[mode] Results are LOST upon abortive cancellation '
+                  '(e.g., via CTRL+C)!')
+        else:
+            print('[mode] Write directly to file.')
+            print('[mode] Results are PRESERVED upon abortive '
+                  'cancellation (e.g., via CTRL+C)!')
+            print('[mode] If aborted, results can be found in headerless '
+                  'temporary file \'{}\'.'.format(outfile + '.temp'))
     if verbosity >= 1:
         if args.outfile is None:
             print('[output] No output file specified. No file output.')
         else:
-            print('[output] Writing output to: {}'.format(outfile))
+            print('[output] Writing output to: \'{}\''.format(outfile))
     return outfile
 
 

@@ -9,7 +9,7 @@ import functions as fn
 import classes
 
 # Define version string
-version_num = '0.23'
+version_num = '0.24'
 version_dat = '2021-12-16'
 version_str = '{} ({})'.format(version_num, version_dat)
 
