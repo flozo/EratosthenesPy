@@ -7,10 +7,9 @@ import argparse
 import time
 import functions as fn
 import classes
-import sieves_storage as sv
 
 # Define version string
-version_num = '0.22'
+version_num = '0.23'
 version_dat = '2021-12-16'
 version_str = '{} ({})'.format(version_num, version_dat)
 

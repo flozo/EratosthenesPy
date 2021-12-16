@@ -14,6 +14,30 @@ class Algorithm(object):
     def __init__(self, divisormethod='sqrt', sievemethod='6k'):
         self.divisormethod = divisormethod
         self.sievemethod = sievemethod
+        if sievemethod == '6k':
+            factor = 6
+            summand1 = -1
+            summand2 = 1
+            limit_shift = 1
+        elif sievemethod == '4k':
+            factor = 4
+            summand1 = 1
+            summand2 = 3
+            limit_shift = -1
+        elif sievemethod == '3k':
+            factor = 3
+            summand1 = 1
+            summand2 = 2
+            limit_shift = -1
+        else:
+            factor = 0
+            summand1 = 0
+            summand2 = 0
+            limit_shift = 0
+        self.factor = factor
+        self.summand1 = summand1
+        self.summand2 = summand2
+        self.limit_shift = limit_shift
 
 
 class Result(Algorithm):

@@ -30,12 +30,8 @@ def select_algorithm(algorithm, divisorfunc, limit, hide_progress, verbosity):
         primes = sieves.alg_all(divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == 'odd':
         primes = sieves.alg_odd(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == '6k':
-        primes = sieves.alg_6k(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == '4k':
-        primes = sieves.alg_4k(divisorfunc, limit, hide_progress)
-    elif algorithm.sievemethod == '3k':
-        primes = sieves.alg_3k(divisorfunc, limit, hide_progress)
+    elif algorithm.sievemethod in ('6k', '4k', '3k'):
+        primes = sieves.alg_fk(algorithm, divisorfunc, limit, hide_progress)
     elif algorithm.sievemethod == 'list':
         primes = sieves.alg_multiples_all(limit, hide_progress)
     elif algorithm.sievemethod == 'list-np':
@@ -52,18 +48,8 @@ def select_algorithm_storage(algorithm, divisorfunc, limit, outfile,
         sv.alg_all(divisorfunc, limit, outfile, hide_progress)
     elif algorithm.sievemethod == 'odd':
         sv.alg_odd(divisorfunc, limit, outfile, hide_progress)
-    elif algorithm.sievemethod == '6k':
-        sv.alg_6k(divisorfunc, limit, outfile, hide_progress)
-    elif algorithm.sievemethod == '4k':
-        sv.alg_4k(divisorfunc, limit, outfile, hide_progress)
-    elif algorithm.sievemethod == '3k':
-        sv.alg_3k(divisorfunc, limit, outfile, hide_progress)
-    # elif algorithm.sievemethod == 'list':
-    #     primes = sieves.alg_multiples_all(limit, hide_progress)
-    # elif algorithm.sievemethod == 'list-np':
-    #     primes = sieves.alg_multiples_all_np(limit, hide_progress)
-    # elif algorithm.sievemethod == 'divisors':
-    #     primes = sieves.numdivisors(limit, hide_progress)
+    elif algorithm.sievemethod in ('6k', '4k', '3k'):
+        sv.alg_fk(algorithm, divisorfunc, limit, outfile, hide_progress)
 
 
 def auto_filename(args, verbosity):
