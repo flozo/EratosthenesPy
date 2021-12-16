@@ -3,6 +3,7 @@
 """Collection of functions."""
 
 import sieves
+import sieves_storage as sv
 import os
 
 
@@ -44,6 +45,27 @@ def select_algorithm(algorithm, divisorfunc, limit, hide_progress, verbosity):
     return primes
 
 
+def select_algorithm_storage(algorithm, divisorfunc, limit, outfile,
+                             hide_progress, verbosity):
+    """Select specified algorithm."""
+    if algorithm.sievemethod == 'all':
+        sv.alg_all(divisorfunc, limit, outfile, hide_progress)
+    elif algorithm.sievemethod == 'odd':
+        sv.alg_odd(divisorfunc, limit, outfile, hide_progress)
+    elif algorithm.sievemethod == '6k':
+        sv.alg_6k(divisorfunc, limit, outfile, hide_progress)
+    elif algorithm.sievemethod == '4k':
+        sv.alg_4k(divisorfunc, limit, outfile, hide_progress)
+    elif algorithm.sievemethod == '3k':
+        sv.alg_3k(divisorfunc, limit, outfile, hide_progress)
+    # elif algorithm.sievemethod == 'list':
+    #     primes = sieves.alg_multiples_all(limit, hide_progress)
+    # elif algorithm.sievemethod == 'list-np':
+    #     primes = sieves.alg_multiples_all_np(limit, hide_progress)
+    # elif algorithm.sievemethod == 'divisors':
+    #     primes = sieves.numdivisors(limit, hide_progress)
+
+
 def auto_filename(args, verbosity):
     """Generate auto filename."""
     # If autoname option is not used, take outfile argument,
@@ -51,17 +73,18 @@ def auto_filename(args, verbosity):
     if args.autoname is False:
         outfile = args.outfile
     else:
-        filename = 'Eratosthenes_{}_{}_{}.dat'.format(args.limit,
-                                                      args.sievemethod,
-                                                      args.divisormethod)
+        filename = 'Eratosthenes_{}_{}_{}_{}.dat'.format(args.limit,
+                                                         args.sievemethod,
+                                                         args.divisormethod,
+                                                         args.mode)
         path = os.path.dirname(args.outfile)
         outfile = os.path.join(path, filename)
         if verbosity >= 1:
             print('[auto-name] Using option --auto-name')
             print('[auto-name] Composing output filename from '
-                  'limit ({}), sieve method ({}), and divisor method '
-                  '({}).'.format(args.limit, args.sievemethod,
-                                 args.divisormethod))
+                  'limit ({}), sieve method ({}), divisor method ({}), and '
+                  'writing mode ({}).'.format(args.limit, args.sievemethod,
+                                              args.divisormethod, args.mode))
             print('[auto-name] Generated auto filename: {}'.format(filename))
             print('[auto-name] Using path from positional argument outfile: '
                   '{}'.format(path))
@@ -87,6 +110,7 @@ def output(result, outfile, verbosity):
             ['Applied sieve method', result.sievemethod],
             ['Applied divisors method', result.divisormethod],
             ['Progress bar active', result.progress_bar_active],
+            ['On-the-fly writing mode', result.mode],
             ['Sifting time', '{:.9f} seconds'.format(result.elapsed_time)],
             ]
         if verbosity >= 0:
@@ -96,7 +120,7 @@ def output(result, outfile, verbosity):
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
                 for item in header:
-                    f.write('# {:<25} {:<25}\n'.format(item[0], item[1]))
+                    f.write('# {:<27} {:<27}\n'.format(item[0], item[1]))
                 f.write(header_closing)
                 for i in range(result.num_primes):
                     f.write('{}\n'.format(result.primes[i]))
@@ -114,7 +138,7 @@ def output(result, outfile, verbosity):
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
                 for item in header:
-                    f.write('# {:<25} {:<25}\n'.format(item[0], item[1]))
+                    f.write('# {:<27} {:<27}\n'.format(item[0], item[1]))
                 f.write(header_closing)
                 f.write('# Number\tDivisors\n')
                 for i in range(result.num_primes):

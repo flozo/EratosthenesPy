@@ -20,11 +20,12 @@ class Result(Algorithm):
     """Define result class."""
 
     def __init__(self, divisormethod, sievemethod, version, limit,
-                 elapsed_time, progress_bar_active, primes):
+                 elapsed_time, progress_bar_active, mode, primes):
         super().__init__(divisormethod, sievemethod)
         self.version = version
         self.limit = limit
         self.num_primes = len(primes)
         self.elapsed_time = elapsed_time
         self.progress_bar_active = progress_bar_active
+        self.mode = mode
         self.primes = primes

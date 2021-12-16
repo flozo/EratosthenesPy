@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Main file of Eratosthenes."""
 
 # Import modules
@@ -6,9 +7,10 @@ import argparse
 import time
 import functions as fn
 import classes
+import sieves_storage as sv
 
 # Define version string
-version_num = '0.21'
+version_num = '0.22'
 version_dat = '2021-12-16'
 version_str = '{} ({})'.format(version_num, version_dat)
 
@@ -40,8 +42,12 @@ def main():
     parser.add_argument('-a', '--auto-name', dest='autoname',
                         action='store_true',
                         help='generate name for output file automatically as '
-                        '\'Eratosthenes_<limit>_<sievemethod>_<divisormethod>.'
-                        'dat\' with path from [outfile]')
+                        '\'Eratosthenes_<limit>_<sievemethod>_<divisormethod>'
+                        '_<mode>.dat\' with path from [outfile]')
+    parser.add_argument('-m', '--mode', choices=('memory', 'storage'),
+                        default='memory', help='on-the-fly writing mode '
+                        '(memory=keep result in array before writing to file, '
+                        'storage=write to disk on the fly)')
     parser.add_argument('limit', type=int, default=100,
                         help='upper limit of test range (a non-negative '
                         'integer)')
@@ -70,14 +76,28 @@ def main():
 
     # Start timer
     start = time.process_time()
-    # Determine prime numbers
-    primes = fn.select_algorithm(algorithm, divisorfunc, limit, hide_progress,
-                                 verbosity)
-    # Stop timer
-    elapsed_time = (time.process_time() - start)
+    # Check writing mode
+    if args.mode == 'storage':
+        # Write to temporary file
+        fn.select_algorithm_storage(algorithm, divisorfunc, limit,
+                                    outfile + '.temp', hide_progress,
+                                    verbosity)
+        # sv.alg_6k_file(divisorfunc, limit, outfile + '.temp')
+        # Stop timer
+        elapsed_time = (time.process_time() - start)
+        # Read temporary file
+        with open(outfile + '.temp', 'r') as f:
+            primes = f.read().splitlines()
+    else:
+        # Determine prime numbers
+        primes = fn.select_algorithm(algorithm, divisorfunc, limit,
+                                     hide_progress, verbosity)
+        # Stop timer
+        elapsed_time = (time.process_time() - start)
     # Define Result object
-    result = classes.Result(args.divisormethod, args.sievemethod, version_str,
-                            limit, elapsed_time, str(args.progress), primes)
+    result = classes.Result(args.divisormethod, args.sievemethod,
+                            version_str, limit, elapsed_time,
+                            str(args.progress), args.mode, primes)
     # Print result if -vv or -vvv
     if verbosity >= 2:
         print(primes)

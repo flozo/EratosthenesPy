@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Setup module for Eratosthenes."""
 
 from setuptools import setup, find_packages

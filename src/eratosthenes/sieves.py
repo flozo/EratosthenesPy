@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Collection of sieve algorithms."""
+# -*- coding: utf-8 -*-
+"""Collection of sieve algorithms for mode=memory."""
 
 import numpy as np
 from tqdm import tqdm
