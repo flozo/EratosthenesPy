@@ -75,7 +75,7 @@ def alg_all(divisorfunc, limit, hide_progress=False):
 def alg_odd(divisorfunc, limit, hide_progress=False):
     """Check only odd numbers."""
     prime = []
-    # Special treatment of small limits (<= 2)
+    # Special treatment for small limits (<= 2)
     if limit >= 2:
         prime.append(2)
     for i in tqdm(range(3, limit+1, 2), disable=hide_progress):
@@ -87,7 +87,7 @@ def alg_odd(divisorfunc, limit, hide_progress=False):
 def alg_6k(divisorfunc, limit, hide_progress=False):
     """Check all numbers of form 6k-1 and 6k+1."""
     prime = []
-    # Special treatment of small limits (<= 3)
+    # Special treatment for small limits (<= 3)
     if limit >= 2:
         prime.append(2)
     if limit >= 3:
@@ -106,7 +106,7 @@ def alg_6k(divisorfunc, limit, hide_progress=False):
 def alg_4k(divisorfunc, limit, hide_progress=False):
     """Check all numbers of form 4k+1 and 4k+3."""
     prime = []
-    # Special treatment of small limits (<= 3)
+    # Special treatment for small limits (<= 3)
     if limit >= 2:
         prime.append(2)
     if limit >= 3:
@@ -125,7 +125,7 @@ def alg_4k(divisorfunc, limit, hide_progress=False):
 def alg_3k(divisorfunc, limit, hide_progress=False):
     """Check all numbers of form 3k+1 and 3k+2."""
     prime = []
-    # Special treatment of small limits (<= 3)
+    # Special treatment for small limits (<= 3)
     if limit >= 2:
         prime.append(2)
     if limit >= 3:
