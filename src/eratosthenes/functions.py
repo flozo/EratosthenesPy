@@ -100,16 +100,21 @@ def auto_filename(args, verbosity):
 def output(result, outfile, verbosity):
     """Generate output file."""
     title = 'Eratosthenes v{}'.format(result.version)
-    header_width = len(title) // 3 * 4
-    header_top = '# {0} {1} {0}\n'.format('*' * int(header_width // 3), title)
-    header_closing = '# {}\n'.format('*' * (len(header_top) - 3))
+    header_width = len(title) // 3 * 5
+    header_top = '#  {0} {1} {0}\n'.format('*' * int(header_width // 3), title)
+    header_closing = '#  {}\n'.format('*' * (len(header_top) - 4))
+    percentage = result.last_iter/result.iterations * 100
 
     if result.sievemethod != 'divisors':
         header = [
             ['Specified integer range', '[0, {}]'.format(result.limit)],
             ['Interrupt exception', '{}'.format(result.interrupt)],
-            ['Interrupt at iteration', '{}'.format(result.last_iter)],
-            ['Actually tested integer range', '[0, {}]'.format(result.actual_limit)],
+            ['Iterations completed',
+             '{} of {} ({:6.2f}%)'.format(result.last_iter,
+                                          result.iterations,
+                                          percentage)],
+            ['Actually tested integer range',
+             '[0, {}]'.format(result.actual_limit)],
             ['Detected prime numbers', result.num_primes],
             ['Applied sieve method', result.sievemethod],
             ['Applied divisors method', result.divisormethod],
@@ -124,7 +129,7 @@ def output(result, outfile, verbosity):
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
                 for item in header:
-                    f.write('# {:<30} {:<30}\n'.format(item[0], item[1]))
+                    f.write('#  {:<31} {:<31}\n'.format(item[0], item[1]))
                 f.write(header_closing)
                 for i in range(result.num_primes):
                     f.write('{}\n'.format(result.primes[i]))
@@ -142,21 +147,23 @@ def output(result, outfile, verbosity):
             with open(outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
                 for item in header:
-                    f.write('# {:<30} {:<30}\n'.format(item[0], item[1]))
+                    f.write('#  {:<31} {:<31}\n'.format(item[0], item[1]))
                 f.write(header_closing)
-                f.write('# Number\tDivisors\n')
+                f.write('#  Number\tDivisors\n')
                 for i in range(result.num_primes):
                     f.write('{}\t{}\n'.format(result.primes[i][0],
                                               result.primes[i][1]))
     # Check keep mode and treat temporary file as specified
     if verbosity >= 1:
-        print('[keep] Keep mode is \'{}\'.'.format(result.keep))
-        print('[keep] Iteration interrupt is \'{}\'.'.format(result.interrupt))
-    if result.keep == 'never' or (result.keep == 'interrupt' and result.interrupt is False):
+        print('[keep] Keep mode: \'{}\'.'.format(result.keep))
+        print('[keep] Interrupt exception: \'{}\'.'.format(result.interrupt))
+    if result.keep == 'never' or (result.keep == 'interrupt' and
+                                  result.interrupt is False):
         os.remove(outfile + '.temp')
         if verbosity >= 1:
             print('[keep] Temporary file \'{}\' '
                   'deleted.'.format(outfile + '.temp'))
     else:
         if verbosity >= 1:
-            print('[keep] Keep temporary file \'{}\'.'.format(outfile + '.temp'))
+            print('[keep] Keep temporary '
+                  'file \'{}\'.'.format(outfile + '.temp'))

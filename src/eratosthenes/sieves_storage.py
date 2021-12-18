@@ -54,4 +54,4 @@ def alg_fk(algorithm, divisorfunc, limit, outfile, hide_progress=False):
                   '{}].'.format(actual_limit))
             interrupt = True
         finally:
-            return interrupt, i, actual_limit
+            return interrupt, i + 1, actual_limit, end

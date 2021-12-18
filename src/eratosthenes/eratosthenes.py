@@ -84,12 +84,12 @@ def main():
     # Check writing mode
     if args.mode == 'storage':
         # Write to temporary file
-        interrupt, last_iter, actual_limit = fn.select_algorithm_storage_mode(algorithm,
-                                                                              divisorfunc,
-                                                                              limit,
-                                                                              outfile + '.temp',
-                                                                              hide_progress,
-                                                                              verbosity)
+        interrupt, last_iter, actual_limit, iterations = fn.select_algorithm_storage_mode(algorithm,
+                                                                                          divisorfunc,
+                                                                                          limit,
+                                                                                          outfile + '.temp',
+                                                                                          hide_progress,
+                                                                                          verbosity)
     else:
         # Determine prime numbers
         primes, last_iter = fn.select_algorithm_memory_mode(algorithm,
@@ -105,7 +105,7 @@ def main():
             primes = f.read().splitlines()
     # Define Result object
     result = classes.Result(args.divisormethod, args.sievemethod, version_str,
-                            limit, last_iter, actual_limit, elapsed_time,
+                            limit, iterations, last_iter, actual_limit, elapsed_time,
                             str(args.progress), args.mode, interrupt,
                             args.keep, primes)
     # Print result if -vv or -vvv

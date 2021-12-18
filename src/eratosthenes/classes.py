@@ -43,12 +43,13 @@ class Algorithm(object):
 class Result(Algorithm):
     """Define result class."""
 
-    def __init__(self, divisormethod, sievemethod, version, limit, last_iter,
-                 actual_limit, elapsed_time, progress_bar_active, mode,
-                 interrupt, keep, primes):
+    def __init__(self, divisormethod, sievemethod, version, limit, iterations,
+                 last_iter, actual_limit, elapsed_time, progress_bar_active,
+                 mode, interrupt, keep, primes):
         super().__init__(divisormethod, sievemethod)
         self.version = version
         self.limit = limit
+        self.iterations = iterations
         self.last_iter = last_iter
         self.actual_limit = actual_limit
         self.num_primes = len(primes)
