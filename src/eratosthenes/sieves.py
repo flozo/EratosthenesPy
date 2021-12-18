@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Collection of sieve algorithms for mode=memory."""
+"""Collection of sieve algorithms (memory mode)."""
 
 import numpy as np
 from tqdm import tqdm
@@ -94,15 +94,19 @@ def alg_fk(algorithm, divisorfunc, limit, hide_progress=False):
     if limit >= 3:
         prime.append(3)
     end = (limit + algorithm.limit_shift) // algorithm.factor + 1
-    for i in tqdm(range(1, end), disable=hide_progress):
-        class1 = algorithm.factor * i + algorithm.summand1
-        class2 = algorithm.factor * i + algorithm.summand2
-        if divisorfunc(class1) is True:
-            prime.append(class1)
-        # Check if class2 exceeds limit:
-        if class2 <= limit and divisorfunc(class2) is True:
-            prime.append(class2)
-    return prime
+    try:
+        for i in tqdm(range(1, end), disable=hide_progress):
+            class1 = algorithm.factor * i + algorithm.summand1
+            class2 = algorithm.factor * i + algorithm.summand2
+            if divisorfunc(class1) is True:
+                prime.append(class1)
+            # Check if class2 exceeds limit:
+            if class2 <= limit and divisorfunc(class2) is True:
+                prime.append(class2)
+    except KeyboardInterrupt:
+        print('[KeyboardInterrupt exception] Last iteration was'
+              ' {}.'.format(i))
+        return prime, i
 
 
 def alg_multiples_all(limit, hide_progress=False):
