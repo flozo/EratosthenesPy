@@ -64,56 +64,74 @@ def isprime_sqrt_break(number):
 
 # Sieve algorithms
 
-def alg_all(divisorfunc, limit, hide_progress=False):
+def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
     """Check all numbers."""
     prime = []
-    for i in tqdm(range(2, limit+1), disable=hide_progress):
+    for i in tqdm(range(2, limit_specified+1),
+                  disable=not(progress_bar_active)):
         if divisorfunc(i) is True:
             prime.append(i)
-    return prime
+    return prime, i
 
 
-def alg_odd(divisorfunc, limit, hide_progress=False):
+def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
     """Check only odd numbers."""
     prime = []
     # Special treatment for small limits (<= 2)
-    if limit >= 2:
+    if limit_specified >= 2:
         prime.append(2)
-    for i in tqdm(range(3, limit+1, 2), disable=hide_progress):
-        if divisorfunc(i) is True:
-            prime.append(i)
-    return prime
-
-
-def alg_fk(algorithm, divisorfunc, limit, hide_progress=False):
-    """Check all numbers of form f*k+s_1 and f*k+s_2."""
-    prime = []
-    # Special treatment for small limits (<= 3)
-    if limit >= 2:
-        prime.append(2)
-    if limit >= 3:
-        prime.append(3)
-    end = (limit + algorithm.limit_shift) // algorithm.factor + 1
     try:
-        for i in tqdm(range(1, end), disable=hide_progress):
-            class1 = algorithm.factor * i + algorithm.summand1
-            class2 = algorithm.factor * i + algorithm.summand2
-            if divisorfunc(class1) is True:
-                prime.append(class1)
-            # Check if class2 exceeds limit:
-            if class2 <= limit and divisorfunc(class2) is True:
-                prime.append(class2)
+        for i in tqdm(range(3, limit_specified+1, 2),
+                      disable=not(progress_bar_active)):
+            if divisorfunc(i) is True:
+                prime.append(i)
     except KeyboardInterrupt:
         print('[KeyboardInterrupt exception] Last iteration was'
               ' {}.'.format(i))
         return prime, i
 
 
-def alg_multiples_all(limit, hide_progress=False):
+def alg_fk(sieve_method, divisorfunc, limit_specified,
+           progress_bar_active=True):
+    """Check all numbers of form f*k+s_1 and f*k+s_2."""
+    # Initialize array
+    prime = []
+    # Initialize switches
+    interrupt = False
+    limit_actual = limit_specified
+    # Special treatment for small limits (<= 3)
+    if limit_specified >= 2:
+        prime.append(2)
+    if limit_specified >= 3:
+        prime.append(3)
+    end = (limit_specified + sieve_method.limit_shift) // sieve_method.factor + 1
+    try:
+        for i in tqdm(range(1, end), disable=not(progress_bar_active)):
+            class1 = sieve_method.factor * i + sieve_method.summand1
+            class2 = sieve_method.factor * i + sieve_method.summand2
+            if divisorfunc(class1) is True:
+                prime.append(class1)
+            # Check if class2 exceeds limit:
+            if class2 <= limit_specified and divisorfunc(class2) is True:
+                prime.append(class2)
+    except KeyboardInterrupt:
+        limit_actual = sieve_method.factor * (i - 1) - sieve_method.limit_shift
+        print('[KeyboardInterrupt exception] Interrupt at iteration '
+              ' {}.'.format(i))
+        print('[KeyboardInterrupt exception] Actually '
+              'tested integer range is [0, '
+              '{}].'.format(limit_actual))
+        interrupt = True
+    finally:
+        return prime, interrupt, i + 1, limit_actual
+
+
+def alg_multiples_all(limit_specified, progress_bar_active=True):
     """Classical sieve of Eratosthenes with deletion of multiples."""
-    nums = list(range(limit+1))
-    for j in tqdm(range(2, limit+1), disable=hide_progress):
-        for i in range(0, limit+1):
+    nums = list(range(limit_specified+1))
+    for j in tqdm(range(2, limit_specified+1),
+                  disable=not(progress_bar_active)):
+        for i in range(0, limit_specified+1):
             if nums[i] in nums[::j][2:]:
                 nums[i] = 0             # Mark multiples of j as 0
     del nums[0]                         # Delete 0
@@ -122,21 +140,22 @@ def alg_multiples_all(limit, hide_progress=False):
     return nums
 
 
-def alg_multiples_all_np(limit, hide_progress=False):
+def alg_multiples_all_np(limit_specified, progress_bar_active=True):
     """Classical sieve of Eratosthenes with deletion of multiples (Numpy version)."""
-    nums = np.arange(2, limit+1)
-    for j in tqdm(range(2, limit+1), disable=hide_progress):
-        multiples = np.arange(j, limit+1, j)
+    nums = np.arange(2, limit_specified+1)
+    for j in tqdm(range(2, limit_specified+1),
+                  disable=not(progress_bar_active)):
+        multiples = np.arange(j, limit_specified+1, j)
         for i in multiples[1:]:
             nums = np.delete(nums, np.argwhere(nums == i))
     return nums
 
 
-def numdivisors(end, hide_progress=False):
+def numdivisors(end, progress_bar_active=True):
     """Determine the number of divisors of a number."""
     dividends = np.arange(start=1, stop=end+1, dtype=int)
     divisors = np.arange(start=1, stop=end+1, dtype=int)
-    for i in tqdm(range(1, len(dividends)+1), disable=hide_progress):
+    for i in tqdm(range(1, len(dividends)+1), disable=not(progress_bar_active)):
         ndivisors = 0
         for j in range(1, i//2+1):      # only check up to half
             if i % j == 0:

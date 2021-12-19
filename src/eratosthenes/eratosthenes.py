@@ -9,8 +9,8 @@ import functions as fn
 import classes
 
 # Define version string
-version_num = '0.25'
-version_dat = '2021-12-18'
+version_num = '0.26'
+version_dat = '2021-12-19'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 
@@ -65,55 +65,67 @@ def main():
     if verbosity >= 1:
         print(args)
 
+    # Define file extension for temporary file
+    temp_ext = '.temp'
     # Translate progress option
-    hide_progress = not(args.progress)
+    # hide_progress = not(args.progress)
 
-    # Select divisor method
-    divisorfunc = fn.select_divisormethod(args)
+    # Create divisor-method object
+    divisor_method = classes.DivisorMethod(args.divisormethod)
+    # Create sieve-method object
+    sieve_method = classes.SieveMethod(args.sievemethod)
+    # divisorfunc = fn.select_divisormethod(args)
     # Generate automatic filename
     outfile = fn.auto_filename(args, verbosity)
-    # Define algorithm
-    algorithm = classes.Algorithm(args.divisormethod, args.sievemethod)
     # Make limit integer
-    limit = int(args.limit)
-    # Set interrupt switch
+    limit_specified = int(args.limit)
+    # Define settings object
+    settings = classes.Settings(divisor_method.name,
+                                sieve_method.name,
+                                version_str,
+                                limit_specified,
+                                sieve_method.get_iterations(limit_specified),
+                                args.progress,
+                                args.mode,
+                                args.keep,
+                                outfile,
+                                temp_ext)
+    # algorithm = classes.Algorithm(args.divisormethod, args.sievemethod)
+    # Set interrupt switch to default
     interrupt = False
 
+    # if verbosity >= 1:
+    #     print()
     # Start timer
     start = time.process_time()
     # Check writing mode
-    if args.mode == 'storage':
+    if settings.mode == 'storage':
         # Write to temporary file
-        interrupt, last_iter, actual_limit, iterations = fn.select_algorithm_storage_mode(algorithm,
-                                                                                          divisorfunc,
-                                                                                          limit,
-                                                                                          outfile + '.temp',
-                                                                                          hide_progress,
-                                                                                          verbosity)
+        interrupt, last_iter, limit_actual = fn.select_algorithm_storage_mode(divisor_method,
+                                                                              sieve_method,
+                                                                              settings,
+                                                                              verbosity)
     else:
         # Determine prime numbers
-        primes, last_iter = fn.select_algorithm_memory_mode(algorithm,
-                                                            divisorfunc,
-                                                            limit,
-                                                            hide_progress,
-                                                            verbosity)
+        primes, interrupt, last_iter, limit_actual = fn.select_algorithm_memory_mode(divisor_method,
+                                                                                     sieve_method,
+                                                                                     settings,
+                                                                                     verbosity)
     # Stop timer
     elapsed_time = (time.process_time() - start)
-    if args.mode == 'storage':
+    if settings.mode == 'storage':
         # Read temporary file
-        with open(outfile + '.temp', 'r') as f:
+        with open(settings.tempfile, 'r') as f:
             primes = f.read().splitlines()
     # Define Result object
-    result = classes.Result(args.divisormethod, args.sievemethod, version_str,
-                            limit, iterations, last_iter, actual_limit, elapsed_time,
-                            str(args.progress), args.mode, interrupt,
-                            args.keep, primes)
+    result = classes.Result(last_iter, limit_actual, elapsed_time,
+                            interrupt, primes)
     # Print result if -vv or -vvv
     if verbosity >= 2:
         print(primes)
 
     # Generate output
-    fn.output(result, outfile, verbosity)
+    fn.output(divisor_method, sieve_method, settings, result, verbosity)
 
 
 if __name__ == '__main__':
