@@ -122,7 +122,7 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
     header_width = len(title) // 3 * 5
     header_top = '#  {0} {1} {0}\n'.format('*' * int(header_width // 3), title)
     header_closing = '#  {}\n'.format('*' * (len(header_top) - 4))
-    percentage = result.last_iter/settings.iterations * 1
+    percentage = result.last_iter/settings.iterations * 100
 
     if sieve_method.name != 'divisors':
         header = [
