@@ -102,12 +102,8 @@ def auto_filename(args, verbosity):
         if args.mode == 'memory':
             print('[mode] First write to array; after completion write '
                   'to file.')
-            print('[mode] Results are LOST upon interrupt!')
         else:
             print('[mode] Write directly to file.')
-            print('[mode] Results are PRESERVED upon interrupt!')
-            print('[mode] If aborted, results can be found in headerless '
-                  'temporary file \'{}\'.'.format(outfile + '.temp'))
     if verbosity >= 1:
         if args.outfile is None:
             print('[output] No output file specified. No file output.')
@@ -122,7 +118,6 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
     header_width = len(title) // 3 * 5
     header_top = '#  {0} {1} {0}\n'.format('*' * int(header_width // 3), title)
     header_closing = '#  {}\n'.format('*' * (len(header_top) - 4))
-    percentage = result.last_iter/settings.iterations * 100
 
     if sieve_method.name != 'divisors':
         header = [
@@ -132,7 +127,7 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
             ['Iterations completed',
              '{} of {} ({:6.2f}%)'.format(result.last_iter,
                                           settings.iterations,
-                                          percentage)],
+                                          result.percentage_completed)],
             ['Actually tested integer range',
              '[0, {}]'.format(result.limit_actual)],
             ['Detected prime numbers', result.num_primes],

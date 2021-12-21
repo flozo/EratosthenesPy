@@ -105,9 +105,10 @@ class Settings(object):
 class Result(object):
     """Define result class."""
 
-    def __init__(self, last_iter, limit_actual, elapsed_time, interrupt,
-                 primes):
+    def __init__(self, last_iter, percentage_completed, limit_actual,
+                 elapsed_time, interrupt, primes):
         self.last_iter = last_iter
+        self.percentage_completed = percentage_completed
         self.limit_actual = limit_actual
         self.num_primes = len(primes)
         self.elapsed_time = elapsed_time

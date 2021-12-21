@@ -51,7 +51,7 @@ def alg_fk(sieve_method, divisorfunc, limit_specified, outfile,
         except KeyboardInterrupt:
             limit_actual = sieve_method.factor * (i - 1) - sieve_method.limit_shift
             print('[KeyboardInterrupt exception] Interrupt at iteration '
-                  ' {}.'.format(i))
+                  ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
             print('[KeyboardInterrupt exception] Actually '
                   'tested integer range is [0, '
                   '{}].'.format(limit_actual))

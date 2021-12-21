@@ -46,7 +46,7 @@ def main():
     parser.add_argument('-m', '--mode', choices=('memory', 'storage'),
                         default='memory', help='on-the-fly writing mode '
                         '(memory=keep result in array before writing to file, '
-                        'storage=write to disk on the fly)')
+                        'storage=write to storage on the fly)')
     parser.add_argument('-k', '--keep',
                         choices=('always', 'never', 'interrupt'),
                         default='interrupt', help='keep mode for temporary '
@@ -117,9 +117,11 @@ def main():
         # Read temporary file
         with open(settings.tempfile, 'r') as f:
             primes = f.read().splitlines()
+    # Calculate percentage of completed iterations
+    percentage_completed = last_iter / settings.iterations * 100
     # Define Result object
-    result = classes.Result(last_iter, limit_actual, elapsed_time,
-                            interrupt, primes)
+    result = classes.Result(last_iter, percentage_completed, limit_actual,
+                            elapsed_time, interrupt, primes)
     # Print result if -vv or -vvv
     if verbosity >= 2:
         print(primes)
