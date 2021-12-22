@@ -9,8 +9,8 @@ import functions as fn
 import classes
 
 # Define version string
-version_num = '0.27'
-version_dat = '2021-12-20'
+version_num = '0.28'
+version_dat = '2021-12-22'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 
@@ -122,7 +122,7 @@ def main():
     # Define Result object
     result = classes.Result(last_iter, percentage_completed, limit_actual,
                             elapsed_time, interrupt, primes)
-    # Print result if -vv or -vvv
+    # Print result if -vv
     if verbosity >= 2:
         print(primes)
 

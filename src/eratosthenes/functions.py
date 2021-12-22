@@ -116,14 +116,19 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
     """Generate output file."""
     title = 'Eratosthenes v{}'.format(settings.version)
     header_width = len(title) // 3 * 5
-    header_top = '#  {0} {1} {0}\n'.format('*' * int(header_width // 3), title)
-    header_closing = '#  {}\n'.format('*' * (len(header_top) - 4))
+    header_top = '# {0} {1} {0}\n'.format('═' * int(header_width // 3), title)
+    header_closing = '# {}\n'.format('═' * (len(header_top) - 4))
 
     if sieve_method.name != 'divisors':
-        header = [
-            ['Specified integer range',
-             '[0, {}]'.format(settings.limit_specified)],
-            ['Interrupt exception', '{}'.format(result.interrupt)],
+        header_settings = [
+            ['Integer range', '[0, {}]'.format(settings.limit_specified)],
+            ['Sieve method', sieve_method.name],
+            ['Divisors method', divisor_method.name],
+            ['Progress bar active', '{}'.format(settings.progress_bar_active)],
+            ['On-the-fly writing mode', settings.mode]
+            ]
+        header_result = [
+            ['Interrupt exception event', '{}'.format(result.interrupt)],
             ['Iterations completed',
              '{} of {} ({:6.2f}%)'.format(result.last_iter,
                                           settings.iterations,
@@ -131,10 +136,6 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
             ['Actually tested integer range',
              '[0, {}]'.format(result.limit_actual)],
             ['Detected prime numbers', result.num_primes],
-            ['Applied sieve method', sieve_method.name],
-            ['Applied divisors method', divisor_method.name],
-            ['Progress bar active', '{}'.format(settings.progress_bar_active)],
-            ['On-the-fly writing mode', settings.mode],
             ['Sifting time', '{:.9f} seconds'.format(result.elapsed_time)],
             ]
         if verbosity >= 0:
@@ -143,8 +144,13 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
         if settings.outfile is not None:
             with open(settings.outfile, 'w', encoding='UTF-8') as f:
                 f.write(header_top)
-                for item in header:
-                    f.write('#  {:<31} {:<31}\n'.format(item[0], item[1]))
+                f.write('#   [Specified settings]\n')
+                for item in header_settings:
+                    f.write('#   {:<31} {:<31}\n'.format(item[0], item[1]))
+                f.write('# {}\n'.format('─' * (len(header_top) - 4)))
+                f.write('#   [Result summary]\n')
+                for item in header_result:
+                    f.write('#   {:<31} {:<31}\n'.format(item[0], item[1]))
                 f.write(header_closing)
                 for i in range(result.num_primes):
                     f.write('{}\n'.format(result.primes[i]))
