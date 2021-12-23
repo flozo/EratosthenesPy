@@ -66,45 +66,66 @@ def isprime_sqrt_break(number):
 
 def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
     """Check all numbers."""
+    # Initialize variables
     prime = []
-    for i in tqdm(range(2, limit_specified+1),
-                  disable=not(progress_bar_active)):
-        if divisorfunc(i) is True:
-            prime.append(i)
-    return prime, i
+    interrupt = False
+    limit_actual = limit_specified
+    end = limit_specified + 1
+    try:
+        for i in tqdm(range(2, end), disable=not(progress_bar_active)):
+            if divisorfunc(i) is True:
+                prime.append(i)
+    except KeyboardInterrupt:
+        limit_actual = i
+        print('[KeyboardInterrupt exception] Interrupt at iteration '
+              ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
+        print('[KeyboardInterrupt exception] Actually '
+              'tested integer range is [0, '
+              '{}].'.format(limit_actual))
+        interrupt = True
+    finally:
+        return prime, interrupt, i + 1, limit_actual
 
 
 def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
-    """Check only odd numbers."""
+    """Check odd numbers only."""
+    # Initialize variables
     prime = []
+    interrupt = False
+    limit_actual = limit_specified
+    end = limit_specified + 1
     # Special treatment for small limits (<= 2)
     if limit_specified >= 2:
         prime.append(2)
     try:
-        for i in tqdm(range(3, limit_specified+1, 2),
-                      disable=not(progress_bar_active)):
+        for i in tqdm(range(3, end, 2), disable=not(progress_bar_active)):
             if divisorfunc(i) is True:
                 prime.append(i)
     except KeyboardInterrupt:
-        print('[KeyboardInterrupt exception] Last iteration was'
-              ' {}.'.format(i))
-        return prime, i
+        limit_actual = i // 2
+        print('[KeyboardInterrupt exception] Interrupt at iteration '
+              ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
+        print('[KeyboardInterrupt exception] Actually '
+              'tested integer range is [0, '
+              '{}].'.format(limit_actual))
+        interrupt = True
+    finally:
+        return prime, interrupt, i + 1, limit_actual
 
 
 def alg_fk(sieve_method, divisorfunc, limit_specified,
            progress_bar_active=True):
     """Check all numbers of form f*k+s_1 and f*k+s_2."""
-    # Initialize array
+    # Initialize variables
     prime = []
-    # Initialize switches
     interrupt = False
     limit_actual = limit_specified
+    end = (limit_specified + sieve_method.limit_shift) // sieve_method.factor + 1
     # Special treatment for small limits (<= 3)
     if limit_specified >= 2:
         prime.append(2)
     if limit_specified >= 3:
         prime.append(3)
-    end = (limit_specified + sieve_method.limit_shift) // sieve_method.factor + 1
     try:
         for i in tqdm(range(1, end), disable=not(progress_bar_active)):
             class1 = sieve_method.factor * i + sieve_method.summand1

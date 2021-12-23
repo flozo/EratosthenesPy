@@ -9,8 +9,8 @@ import functions as fn
 import classes
 
 # Define version string
-version_num = '0.28'
-version_dat = '2021-12-22'
+version_num = '0.29'
+version_dat = '2021-12-23'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 

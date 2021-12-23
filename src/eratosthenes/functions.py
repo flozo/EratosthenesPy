@@ -117,7 +117,7 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
     title = 'Eratosthenes v{}'.format(settings.version)
     header_width = len(title) // 3 * 5
     header_top = '# {0} {1} {0}\n'.format('═' * int(header_width // 3), title)
-    header_closing = '# {}\n'.format('═' * (len(header_top) - 4))
+    header_closing = '# {}\n'.format('═' * (len(header_top) - 3))
 
     if sieve_method.name != 'divisors':
         header_settings = [
@@ -147,7 +147,7 @@ def output(divisor_method, sieve_method, settings, result, verbosity):
                 f.write('#   [Specified settings]\n')
                 for item in header_settings:
                     f.write('#   {:<31} {:<31}\n'.format(item[0], item[1]))
-                f.write('# {}\n'.format('─' * (len(header_top) - 4)))
+                f.write('# {}\n'.format('─' * (len(header_top) - 3)))
                 f.write('#   [Result summary]\n')
                 for item in header_result:
                     f.write('#   {:<31} {:<31}\n'.format(item[0], item[1]))
