@@ -71,6 +71,7 @@ def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
     interrupt = False
     limit_actual = limit_specified
     end = limit_specified + 1
+    # Additional try block for handling keyboard interrupt
     try:
         for i in tqdm(range(2, end), disable=not(progress_bar_active)):
             if divisorfunc(i) is True:
@@ -97,6 +98,7 @@ def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
     # Special treatment for small limits (<= 2)
     if limit_specified >= 2:
         prime.append(2)
+    # Additional try block for handling keyboard interrupt
     try:
         for i in tqdm(range(3, end, 2), disable=not(progress_bar_active)):
             if divisorfunc(i) is True:
@@ -126,6 +128,7 @@ def alg_fk(sieve_method, divisorfunc, limit_specified,
         prime.append(2)
     if limit_specified >= 3:
         prime.append(3)
+    # Additional try block for handling keyboard interrupt
     try:
         for i in tqdm(range(1, end), disable=not(progress_bar_active)):
             class1 = sieve_method.factor * i + sieve_method.summand1
