@@ -40,7 +40,7 @@ def divisors_sqrt(number):
 
 # Prime-check algorithms
 
-def isprime_all_break(number):
+def isprime_all(number):
     """Check if number has more than 2 divisors up to number."""
     if number < 2:                  # 0 and 1 are not prime
         return False
@@ -51,12 +51,38 @@ def isprime_all_break(number):
         return True
 
 
-def isprime_sqrt_break(number):
+def isprime_odd(number):
+    """Check if number has more than 2 odd divisors up to number."""
+    if number < 2:                  # 0 and 1 are not prime
+        return False
+    if number % 2 == 0:             # check if 2 is divisor
+        return False
+    if number > 2:
+        for i in range(3, number, 2):
+            if number % i == 0:     # check for divisor other than 1 or number
+                return False
+        return True
+
+
+def isprime_sqrt(number):
     """Check if number has more than 2 divisors up to square root of number."""
     if number < 2:                  # 0 and 1 are not prime
         return False
     if number >= 2:
         for i in range(2, int(np.sqrt(number))+1):
+            if number % i == 0:     # check for divisor other than 1 or number
+                return False
+        return True
+
+
+def isprime_sqrt_odd(number):
+    """Check if number has more than 2 odd divisors up to square root of number."""
+    if number < 2:                  # 0 and 1 are not prime
+        return False
+    if number % 2 == 0:             # check if 2 is divisor
+        return False
+    if number > 2:
+        for i in range(3, int(np.sqrt(number))+1, 2):
             if number % i == 0:     # check for divisor other than 1 or number
                 return False
         return True

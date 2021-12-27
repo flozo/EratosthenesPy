@@ -9,7 +9,7 @@ import functions as fn
 import classes
 
 # Define version string
-version_num = '0.30'
+version_num = '0.31'
 version_dat = '2021-12-27'
 version_str = '{} ({})'.format(version_num, version_dat)
 
@@ -35,9 +35,11 @@ def main():
     parser.add_argument('-s', '--sievemethod', dest='sievemethod',
                         choices=('all', 'odd', '3k', '4k', '6k', 'list',
                                  'list-np', 'divisors'),
-                        default='6k', help='sieve method')
-    parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt'),
-                        default='sqrt', help='divisor method')
+                        default='6k', help='sieve method (default: 6k)')
+    parser.add_argument('-d', '--divisormethod', choices=('all', 'sqrt', 'odd',
+                                                          'sqrt-odd'),
+                        default='sqrt-odd',
+                        help='divisor method (default: sqrt-odd)')
     parser.add_argument('-a', '--auto-name', dest='autoname',
                         action='store_true',
                         help='generate name for output file automatically as '

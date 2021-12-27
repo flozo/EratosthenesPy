@@ -9,16 +9,24 @@ import sieves
 class DivisorMethod(object):
     """Define divisor-method class."""
 
-    def __init__(self, name='sqrt'):
+    def __init__(self, name='sqrt-odd'):
         self.name = name
         if name == 'all':
-            self.function = sieves.isprime_all_break
+            self.function = sieves.isprime_all
             self.description = 'For primality test of n, check each integer '
             'up to n for being a divisor.'
+        elif name == 'odd':
+            self.function = sieves.isprime_odd
+            self.description = 'For primality test of n, check each odd '
+            'integer up to n for being a divisor.'
         elif name == 'sqrt':
-            self.function = sieves.isprime_sqrt_break
+            self.function = sieves.isprime_sqrt
             self.description = 'For primality test of n, check each integer '
             'up to square root of n for being a divisor.'
+        elif name == 'sqrt-odd':
+            self.function = sieves.isprime_sqrt_odd
+            self.description = 'For primality test of n, check each odd '
+            'integer up to square root of n for being a divisor.'
         # self.function = fn.select_divisormethod(name)
 
     def show_description(self):

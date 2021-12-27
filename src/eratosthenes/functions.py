@@ -18,9 +18,13 @@ def verbosity_level(args):
 def select_divisormethod(args):
     """Select specified divisor method."""
     if args.divisormethod == 'all':
-        divisorfunc = sieves.isprime_all_break
+        divisorfunc = sieves.isprime_all
+    elif args.divisormethod == 'odd':
+        divisorfunc = sieves.isprime_odd
     elif args.divisormethod == 'sqrt':
-        divisorfunc = sieves.isprime_sqrt_break
+        divisorfunc = sieves.isprime_sqrt
+    elif args.divisormethod == 'sqrt-odd':
+        divisorfunc = sieves.isprime_sqrt_odd
     return divisorfunc
 
 
