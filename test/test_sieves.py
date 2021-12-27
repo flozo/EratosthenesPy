@@ -3,6 +3,7 @@
 """Test functions for eratosthenes.sieves."""
 
 import eratosthenes.sieves as sv
+from eratosthenes.classes import SieveMethod as sm
 
 
 def test_divisors_all():
@@ -25,29 +26,54 @@ def test_divisors_sqrt():
     assert sv.divisors_sqrt(360) == result360
 
 
-def test_isprime_all_break():
+def test_isprime_all():
     primes = [2, 3, 5, 991429]
     composites = [4, 6, 12, 360, 12345678902]
     other_nonprimes = [0, 1]
     for prime in primes:
-        assert sv.isprime_all_break(prime) is True
+        assert sv.isprime_all(prime) is True
     for composite in composites:
-        assert sv.isprime_all_break(composite) is False
+        assert sv.isprime_all(composite) is False
     for other_nonprime in other_nonprimes:
-        assert sv.isprime_all_break(other_nonprime) is False
+        assert sv.isprime_all(other_nonprime) is False
 
 
-def test_isprime_sqrt_break():
+def test_isprime_odd():
+    primes = [2, 3, 5, 991429]
+    composites = [4, 6, 12, 360, 12345678902]
+    other_nonprimes = [0, 1]
+    for prime in primes:
+        assert sv.isprime_odd(prime) is True
+    for composite in composites:
+        assert sv.isprime_odd(composite) is False
+    for other_nonprime in other_nonprimes:
+        assert sv.isprime_odd(other_nonprime) is False
+
+
+def test_isprime_sqrt():
     primes = [2, 3, 5, 991429, 188748146801, 492366587, 7596952219,
               32212254719]
     composites = [4, 6, 12, 360, 12345678902]
     other_nonprimes = [0, 1]
     for prime in primes:
-        assert sv.isprime_sqrt_break(prime) is True
+        assert sv.isprime_sqrt(prime) is True
     for composite in composites:
-        assert sv.isprime_sqrt_break(composite) is False
+        assert sv.isprime_sqrt(composite) is False
     for other_nonprime in other_nonprimes:
-        assert sv.isprime_sqrt_break(other_nonprime) is False
+        assert sv.isprime_sqrt(other_nonprime) is False
+
+
+def test_isprime_sqrt_odd():
+    primes = [2, 3, 5, 991429, 188748146801, 492366587, 7596952219,
+              32212254719]
+    composites = [4, 6, 12, 360, 12345678902]
+    other_nonprimes = [0, 1]
+    for prime in primes:
+        assert sv.isprime_sqrt_odd(prime) is True
+    for composite in composites:
+        assert sv.isprime_sqrt_odd(composite) is False
+    for other_nonprime in other_nonprimes:
+        assert sv.isprime_sqrt_odd(other_nonprime) is False
 
 
 # Expected results (independent of sieve algorithm)
@@ -72,24 +98,21 @@ primesdict = {
 # Sieve algorithms
 def test_alg_all():
     for key in primesdict:
-        assert sv.alg_all(sv.isprime_all_break, key, True) == primesdict[key]
+        assert sv.alg_all(sv.isprime_all, key, False)[0] == primesdict[key]
 
 
 def test_alg_odd():
     for key in primesdict:
-        assert sv.alg_odd(sv.isprime_all_break, key, True) == primesdict[key]
+        assert sv.alg_odd(sv.isprime_all, key, False)[0] == primesdict[key]
 
 
-def test_alg_6k():
+def test_alg_fk():
     for key in primesdict:
-        assert sv.alg_6k(sv.isprime_all_break, key, True) == primesdict[key]
-
-
-def test_alg_4k():
+        assert sv.alg_fk(sm('6k'), sv.isprime_all,
+                         key, False)[0] == primesdict[key]
     for key in primesdict:
-        assert sv.alg_4k(sv.isprime_all_break, key, True) == primesdict[key]
-
-
-def test_alg_3k():
+        assert sv.alg_fk(sm('4k'), sv.isprime_all,
+                         key, False)[0] == primesdict[key]
     for key in primesdict:
-        assert sv.alg_3k(sv.isprime_all_break, key, True) == primesdict[key]
+        assert sv.alg_fk(sm('3k'), sv.isprime_all,
+                         key, False)[0] == primesdict[key]

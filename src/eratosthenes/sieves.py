@@ -55,6 +55,8 @@ def isprime_odd(number):
     """Check if number has more than 2 odd divisors up to number."""
     if number < 2:                  # 0 and 1 are not prime
         return False
+    if number == 2:                 # 2 is prime
+        return True
     if number % 2 == 0:             # check if 2 is divisor
         return False
     if number > 2:
@@ -79,6 +81,8 @@ def isprime_sqrt_odd(number):
     """Check if number has more than 2 odd divisors up to square root of number."""
     if number < 2:                  # 0 and 1 are not prime
         return False
+    if number == 2:                 # 2 is prime
+        return True
     if number % 2 == 0:             # check if 2 is divisor
         return False
     if number > 2:
@@ -96,6 +100,7 @@ def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
     prime = []
     interrupt = False
     limit_actual = limit_specified
+    last_iter = 0
     end = limit_specified + 1
     # Additional try block for handling keyboard interrupt
     try:
@@ -103,6 +108,7 @@ def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
             if divisorfunc(i) is True:
                 prime.append(i)
     except KeyboardInterrupt:
+        last_iter = i
         limit_actual = i
         print('[KeyboardInterrupt exception] Interrupt at iteration '
               ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
@@ -111,7 +117,7 @@ def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
               '{}].'.format(limit_actual))
         interrupt = True
     finally:
-        return prime, interrupt, i + 1, limit_actual
+        return prime, interrupt, last_iter, limit_actual
 
 
 def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
@@ -120,6 +126,7 @@ def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
     prime = []
     interrupt = False
     limit_actual = limit_specified
+    last_iter = 0
     end = limit_specified + 1
     # Special treatment for small limits (<= 2)
     if limit_specified >= 2:
@@ -130,6 +137,7 @@ def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
             if divisorfunc(i) is True:
                 prime.append(i)
     except KeyboardInterrupt:
+        last_iter = i + 1
         limit_actual = i // 2
         print('[KeyboardInterrupt exception] Interrupt at iteration '
               ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
@@ -138,7 +146,7 @@ def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
               '{}].'.format(limit_actual))
         interrupt = True
     finally:
-        return prime, interrupt, i + 1, limit_actual
+        return prime, interrupt, last_iter, limit_actual
 
 
 def alg_fk(sieve_method, divisorfunc, limit_specified,
@@ -148,6 +156,7 @@ def alg_fk(sieve_method, divisorfunc, limit_specified,
     prime = []
     interrupt = False
     limit_actual = limit_specified
+    last_iter = 0
     end = (limit_specified + sieve_method.limit_shift) // sieve_method.factor + 1
     # Special treatment for small limits (<= 3)
     if limit_specified >= 2:
@@ -165,6 +174,7 @@ def alg_fk(sieve_method, divisorfunc, limit_specified,
             if class2 <= limit_specified and divisorfunc(class2) is True:
                 prime.append(class2)
     except KeyboardInterrupt:
+        last_iter = i + 1
         limit_actual = sieve_method.factor * (i - 1) - sieve_method.limit_shift
         print('[KeyboardInterrupt exception] Interrupt at iteration '
               ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
@@ -173,7 +183,7 @@ def alg_fk(sieve_method, divisorfunc, limit_specified,
               '{}].'.format(limit_actual))
         interrupt = True
     finally:
-        return prime, interrupt, i + 1, limit_actual
+        return prime, interrupt, last_iter, limit_actual
 
 
 def alg_multiples_all(limit_specified, progress_bar_active=True):

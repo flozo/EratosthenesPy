@@ -3,7 +3,7 @@
 """Collection of classes."""
 
 
-import sieves
+import sieves as sv
 
 
 class DivisorMethod(object):
@@ -12,19 +12,19 @@ class DivisorMethod(object):
     def __init__(self, name='sqrt-odd'):
         self.name = name
         if name == 'all':
-            self.function = sieves.isprime_all
+            self.function = sv.isprime_all
             self.description = 'For primality test of n, check each integer '
             'up to n for being a divisor.'
         elif name == 'odd':
-            self.function = sieves.isprime_odd
+            self.function = sv.isprime_odd
             self.description = 'For primality test of n, check each odd '
             'integer up to n for being a divisor.'
         elif name == 'sqrt':
-            self.function = sieves.isprime_sqrt
+            self.function = sv.isprime_sqrt
             self.description = 'For primality test of n, check each integer '
             'up to square root of n for being a divisor.'
         elif name == 'sqrt-odd':
-            self.function = sieves.isprime_sqrt_odd
+            self.function = sv.isprime_sqrt_odd
             self.description = 'For primality test of n, check each odd '
             'integer up to square root of n for being a divisor.'
         # self.function = fn.select_divisormethod(name)
