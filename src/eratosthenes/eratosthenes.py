@@ -9,8 +9,8 @@ import functions as fn
 import classes
 
 # Define version string
-version_num = '0.29'
-version_dat = '2021-12-23'
+version_num = '0.30'
+version_dat = '2021-12-27'
 version_str = '{} ({})'.format(version_num, version_dat)
 
 
@@ -76,7 +76,7 @@ def main():
     sieve_method = classes.SieveMethod(args.sievemethod)
     # divisorfunc = fn.select_divisormethod(args)
     # Generate automatic filename
-    outfile = fn.auto_filename(args, verbosity)
+    path, outfile = fn.auto_filename(args, verbosity)
     # Make limit integer
     limit_specified = int(args.limit)
     # Define settings object
@@ -88,8 +88,12 @@ def main():
                                 args.progress,
                                 args.mode,
                                 args.keep,
+                                args.autoname,
+                                path,
                                 outfile,
                                 temp_ext)
+    if verbosity >= 1:
+        settings.show_description()
     # algorithm = classes.Algorithm(args.divisormethod, args.sievemethod)
     # Set interrupt switch to default
     interrupt = False

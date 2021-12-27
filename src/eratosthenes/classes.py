@@ -88,8 +88,8 @@ class Settings(object):
     """Define settings class."""
 
     def __init__(self, divisormethod, sievemethod, version, limit_specified,
-                 iterations, progress_bar_active, mode, keep, outfile,
-                 temp_ext):
+                 iterations, progress_bar_active, mode, keep, auto_filename,
+                 path, outfile, temp_ext):
         self.divisormethod = divisormethod
         self.sievemethod = sievemethod
         self.version = version
@@ -98,8 +98,54 @@ class Settings(object):
         self.progress_bar_active = progress_bar_active
         self.mode = mode
         self.keep = keep
+        self.auto_filename = auto_filename
+        self.path = path
         self.outfile = outfile
         self.tempfile = outfile + temp_ext
+
+    def description(self):
+        """Define description."""
+        settings = [
+            '[settings] Specified integer range is '
+            '[0, {}].'.format(self.limit_specified),
+            '[settings] Use sieve method \'{}\'.'.format(self.sievemethod),
+            '[settings] Use divisor method \'{}\'.'.format(self.divisormethod),
+            '[settings] Progress bar active: '
+            '{}'.format(self.progress_bar_active),
+            '[settings] Write data on-the-fly to: \'{}\''.format(self.mode),
+            '[settings] Generate output filename automatically: '
+            '\'{}\''.format(self.auto_filename)
+            ]
+        if self.auto_filename is False:
+            settings.append('[settings] Specified output filename: '
+                            '\'{}\'.'.format(self.outfile))
+        auto_name = [
+            '[auto-name] Composing output filename from limit (\'{}\'), '
+            'sieve method (\'{}\'), divisor method (\'{}\'), and writing '
+            'mode (\'{}\').'.format(self.limit_specified,
+                                    self.sievemethod,
+                                    self.divisormethod,
+                                    self.mode),
+            '[auto-name] Using path from positional argument outfile: '
+            '\'{}\''.format(self.path),
+            '[auto-name] Generated auto filename: '
+            '\'{}\''.format(self.outfile),
+            ]
+        if self.mode == 'storage':
+            settings.append('[settings] Keep temporary file: '
+                            '\'{}\''.format(self.keep))
+            auto_name.append('[auto-name] Writing to temporary file '
+                             '\'{}\''.format(self.tempfile))
+        return settings, auto_name
+
+    def show_description(self):
+        """Print description."""
+        settings, auto_name = self.description()
+        for item in settings:
+            print(item)
+        if self.auto_filename is True:
+            for item in auto_name:
+                print(item)
 
 
 class Result(object):

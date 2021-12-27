@@ -12,7 +12,7 @@ long_description = (here/'README.md').read_text(encoding='utf-8')
 
 setup(
         name='eratosthenes',
-        version='0.29',
+        version='0.30',
         description='A program for testing implementations of the sieve of '
         'Eratosthenes.',
         long_description=long_description,
