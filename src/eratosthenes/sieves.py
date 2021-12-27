@@ -107,11 +107,12 @@ def alg_all(divisorfunc, limit_specified, progress_bar_active=True):
         for i in tqdm(range(2, end), disable=not(progress_bar_active)):
             if divisorfunc(i) is True:
                 prime.append(i)
+        last_iter = i
     except KeyboardInterrupt:
         last_iter = i
         limit_actual = i
         print('[KeyboardInterrupt exception] Interrupt at iteration '
-              ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
+              ' {} of {} ({:6.2f}%).'.format(last_iter, end, last_iter / end * 100))
         print('[KeyboardInterrupt exception] Actually '
               'tested integer range is [0, '
               '{}].'.format(limit_actual))
@@ -136,11 +137,12 @@ def alg_odd(divisorfunc, limit_specified, progress_bar_active=True):
         for i in tqdm(range(3, end, 2), disable=not(progress_bar_active)):
             if divisorfunc(i) is True:
                 prime.append(i)
+        last_iter = i + 1
     except KeyboardInterrupt:
         last_iter = i + 1
         limit_actual = i // 2
         print('[KeyboardInterrupt exception] Interrupt at iteration '
-              ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
+              ' {} of {} ({:6.2f}%).'.format(last_iter, end, last_iter / end * 100))
         print('[KeyboardInterrupt exception] Actually '
               'tested integer range is [0, '
               '{}].'.format(limit_actual))
@@ -173,11 +175,12 @@ def alg_fk(sieve_method, divisorfunc, limit_specified,
             # Check if class2 exceeds limit:
             if class2 <= limit_specified and divisorfunc(class2) is True:
                 prime.append(class2)
+        last_iter = i + 1
     except KeyboardInterrupt:
         last_iter = i + 1
         limit_actual = sieve_method.factor * (i - 1) - sieve_method.limit_shift
         print('[KeyboardInterrupt exception] Interrupt at iteration '
-              ' {} of {} ({:6.2f}%).'.format(i, end, i / end * 100))
+              ' {} of {} ({:6.2f}%).'.format(last_iter, end, last_iter / end * 100))
         print('[KeyboardInterrupt exception] Actually '
               'tested integer range is [0, '
               '{}].'.format(limit_actual))
